@@ -196,48 +196,125 @@ class HomeScreen extends StatelessWidget {
                   )
                 else
                   Container(
-                    height: 130,
+                    height: 150,
                     margin: const EdgeInsets.symmetric(horizontal: 20),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 12),
+                    padding: const EdgeInsets.fromLTRB(12, 16, 12, 8),
                     decoration: BoxDecoration(
                       color: AppColors.surface,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: AppColors.divider),
                     ),
-                    child: LineChart(
-                      LineChartData(
-                        gridData: const FlGridData(show: false),
-                        titlesData: const FlTitlesData(show: false),
-                        borderData: FlBorderData(show: false),
-                        lineBarsData: [
-                          LineChartBarData(
-                            spots: () {
-                              final raw = banking.weeklyBalanceData;
-                              final minVal = raw.reduce((a, b) => a < b ? a : b);
-                              final maxVal = raw.reduce((a, b) => a > b ? a : b);
-                              final range = maxVal - minVal;
-                              // Normalise to 0–100 so chart always shows variation
-                              return raw.asMap().entries.map((e) {
-                                final y = range > 0
-                                    ? ((e.value - minVal) / range) * 100
-                                    : 50.0;
-                                return FlSpot(e.key.toDouble(), y);
-                              }).toList();
-                            }(),
-                            isCurved: true,
-                            color: AppColors.textPrimary,
-                            barWidth: 2,
-                            isStrokeCapRound: true,
-                            dotData: const FlDotData(show: false),
-                            belowBarData: BarAreaData(
-                              show: true,
-                              color: AppColors.textPrimary.withValues(alpha: 0.05),
+                    child: Builder(builder: (context) {
+                      // Build last 7 days of credit/debit totals
+                      final now = DateTime.now();
+                      final days = List.generate(7, (i) {
+                        final day = now.subtract(Duration(days: 6 - i));
+                        final dayTxs = banking.transactions.where((t) {
+                          return t.timestamp.year == day.year &&
+                              t.timestamp.month == day.month &&
+                              t.timestamp.day == day.day;
+                        });
+                        final income = dayTxs
+                            .where((t) => t.isCredit)
+                            .fold(0.0, (s, t) => s + t.amount);
+                        final spend = dayTxs
+                            .where((t) => !t.isCredit)
+                            .fold(0.0, (s, t) => s + t.amount);
+                        return [income, spend];
+                      });
+
+                      final allVals = days.expand((d) => d).toList();
+                      final maxVal = allVals.fold(0.0, (a, b) => a > b ? a : b);
+                      // Always show a visible chart even with no data
+                      final chartMax = maxVal < 1 ? 100.0 : maxVal * 1.3;
+
+                      final dayLabels = List.generate(7, (i) {
+                        final d = now.subtract(Duration(days: 6 - i));
+                        const names = ['Mo','Tu','We','Th','Fr','Sa','Su'];
+                        return names[d.weekday - 1];
+                      });
+
+                      return BarChart(
+                        BarChartData(
+                          maxY: chartMax,
+                          minY: 0,
+                          barTouchData: BarTouchData(
+                            touchTooltipData: BarTouchTooltipData(
+                              getTooltipColor: (_) => AppColors.elevated,
+                              getTooltipItem: (group, gIdx, rod, rIdx) {
+                                final label = rIdx == 0 ? 'In' : 'Out';
+                                return BarTooltipItem(
+                                  '$label\nXAF ${rod.toY.round()}',
+                                  TextStyle(
+                                    color: rIdx == 0
+                                        ? AppColors.credit
+                                        : AppColors.debit,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                );
+                              },
                             ),
                           ),
-                        ],
-                      ),
-                    ),
+                          titlesData: FlTitlesData(
+                            leftTitles: const AxisTitles(
+                                sideTitles: SideTitles(showTitles: false)),
+                            topTitles: const AxisTitles(
+                                sideTitles: SideTitles(showTitles: false)),
+                            rightTitles: const AxisTitles(
+                                sideTitles: SideTitles(showTitles: false)),
+                            bottomTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                                showTitles: true,
+                                getTitlesWidget: (val, meta) {
+                                  final idx = val.toInt();
+                                  if (idx < 0 || idx >= 7) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  return Padding(
+                                    padding: const EdgeInsets.only(top: 6),
+                                    child: Text(
+                                      dayLabels[idx],
+                                      style: const TextStyle(
+                                        color: AppColors.textSecondary,
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                reservedSize: 22,
+                              ),
+                            ),
+                          ),
+                          gridData: const FlGridData(show: false),
+                          borderData: FlBorderData(show: false),
+                          barGroups: List.generate(7, (i) {
+                            return BarChartGroupData(
+                              x: i,
+                              barRods: [
+                                BarChartRodData(
+                                  toY: days[i][0] == 0 && days[i][1] == 0
+                                      ? 2.0  // tiny placeholder so bars are visible
+                                      : days[i][0],
+                                  color: AppColors.credit,
+                                  width: 6,
+                                  borderRadius: BorderRadius.circular(3),
+                                ),
+                                BarChartRodData(
+                                  toY: days[i][0] == 0 && days[i][1] == 0
+                                      ? 2.0
+                                      : days[i][1],
+                                  color: AppColors.debit,
+                                  width: 6,
+                                  borderRadius: BorderRadius.circular(3),
+                                ),
+                              ],
+                              barsSpace: 3,
+                            );
+                          }),
+                        ),
+                      );
+                    }),
                   ).animate().fadeIn(delay: 400.ms),
 
                 const SizedBox(height: 32),

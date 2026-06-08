@@ -184,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Expanded(
                       child: FluxButton(
-                        'Register',
+                        'Sign Up',
                         variant: FluxButtonVariant.secondary,
                         onPressed: () =>
                             Navigator.pushNamed(context, AppRouter.register),
