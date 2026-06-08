@@ -16,10 +16,6 @@ class MobileMoneyScreen extends StatefulWidget {
 class _MobileMoneyScreenState extends State<MobileMoneyScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final _phoneController = TextEditingController();
-  final _amountController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  bool _isSuccess = false;
 
   @override
   void initState() {
@@ -31,18 +27,82 @@ class _MobileMoneyScreenState extends State<MobileMoneyScreen>
   @override
   void dispose() {
     _tabController.dispose();
-    _phoneController.dispose();
-    _amountController.dispose();
     super.dispose();
   }
 
   Color get _activeColor =>
-      _tabController.index == 0
-          ? AppColors.mtnYellow
-          : AppColors.orangeMoney;
+      _tabController.index == 0 ? AppColors.mtnYellow : AppColors.orangeMoney;
 
-  String get _providerName =>
-      _tabController.index == 0 ? 'MTN MoMo' : 'Orange Money';
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.shell,
+      appBar: AppBar(
+        title: const Text('Mobile Money'),
+        elevation: 0,
+        backgroundColor: AppColors.shell,
+        bottom: TabBar(
+          controller: _tabController,
+          indicatorColor: _activeColor,
+          labelColor: _activeColor,
+          unselectedLabelColor: AppColors.textSecondary,
+          indicatorSize: TabBarIndicatorSize.label,
+          tabs: const [
+            Tab(text: 'MTN MoMo'),
+            Tab(text: 'Orange Money'),
+          ],
+        ),
+      ),
+      // Each tab is its own StatefulWidget — fully isolated state
+      body: TabBarView(
+        controller: _tabController,
+        children: const [
+          _MoMoTab(
+            brandColor: AppColors.mtnYellow,
+            providerName: 'MTN MoMo',
+          ),
+          _MoMoTab(
+            brandColor: AppColors.orangeMoney,
+            providerName: 'Orange Money',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── Isolated tab widget — each instance has its own form & controllers ───────
+
+class _MoMoTab extends StatefulWidget {
+  final Color brandColor;
+  final String providerName;
+
+  const _MoMoTab({
+    required this.brandColor,
+    required this.providerName,
+  });
+
+  @override
+  State<_MoMoTab> createState() => _MoMoTabState();
+}
+
+class _MoMoTabState extends State<_MoMoTab>
+    with AutomaticKeepAliveClientMixin {
+  final _formKey = GlobalKey<FormState>();
+  final _phoneController = TextEditingController();
+  final _amountController = TextEditingController();
+  bool _isSuccess = false;
+
+  // Keep tab alive when switching so form state is preserved
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    _amountController.dispose();
+    super.dispose();
+  }
 
   void _submit(bool isDeposit) async {
     if (_formKey.currentState!.validate()) {
@@ -53,7 +113,7 @@ class _MobileMoneyScreenState extends State<MobileMoneyScreen>
       final success = await banking.depositMobileMoney(
         phone: _phoneController.text,
         amount: amount,
-        provider: _providerName,
+        provider: widget.providerName,
         isDeposit: isDeposit,
       );
 
@@ -65,90 +125,58 @@ class _MobileMoneyScreenState extends State<MobileMoneyScreen>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context); // required for AutomaticKeepAliveClientMixin
     final banking = context.watch<BankingProvider>();
+    final brandColor = widget.brandColor;
 
     if (_isSuccess) {
-      return Scaffold(
-        backgroundColor: AppColors.shell,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  color: _activeColor.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                      color: _activeColor.withValues(alpha: 0.4)),
-                ),
-                child: Icon(Icons.check_circle,
-                    color: _activeColor, size: 56),
-              ).animate().scale(duration: 500.ms, curve: Curves.elasticOut),
-
-              const SizedBox(height: 24),
-
-              const Text(
-                'Transaction Successful!',
-                style: TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                color: brandColor.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+                border:
+                    Border.all(color: brandColor.withValues(alpha: 0.4)),
               ),
+              child: Icon(Icons.check_circle, color: brandColor, size: 56),
+            ).animate().scale(duration: 500.ms, curve: Curves.elasticOut),
 
-              const SizedBox(height: 40),
+            const SizedBox(height: 24),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: FluxButton(
-                  'Done',
-                  onPressed: () {
-                    setState(() {
-                      _isSuccess = false;
-                      _phoneController.clear();
-                      _amountController.clear();
-                    });
-                  },
-                ),
+            const Text(
+              'Transaction Successful!',
+              style: TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
               ),
-            ],
-          ),
+            ),
+
+            const SizedBox(height: 40),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: FluxButton(
+                'Done',
+                onPressed: () {
+                  setState(() {
+                    _isSuccess = false;
+                    _phoneController.clear();
+                    _amountController.clear();
+                  });
+                },
+              ),
+            ),
+          ],
         ),
       );
     }
 
-    return Scaffold(
-      backgroundColor: AppColors.shell,
-      appBar: AppBar(
-        title: const Text('Mobile Money'),
-        elevation: 0,
-        backgroundColor: AppColors.shell,
-        bottom: TabBar(
-          controller: _tabController,
-          // Keep brand colors for tab indicators
-          indicatorColor: _activeColor,
-          labelColor: _activeColor,
-          unselectedLabelColor: AppColors.textSecondary,
-          indicatorSize: TabBarIndicatorSize.label,
-          tabs: const [
-            Tab(text: 'MTN MoMo'),
-            Tab(text: 'Orange Money'),
-          ],
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildForm(banking, AppColors.mtnYellow),
-          _buildForm(banking, AppColors.orangeMoney),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildForm(BankingProvider banking, Color brandColor) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
       child: Form(
@@ -156,14 +184,14 @@ class _MobileMoneyScreenState extends State<MobileMoneyScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Balance card with brand color accent
+            // Balance display with brand color accent
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                    color: brandColor.withValues(alpha: 0.3)),
+                border:
+                    Border.all(color: brandColor.withValues(alpha: 0.3)),
               ),
               child: Row(
                 children: [
@@ -174,8 +202,11 @@ class _MobileMoneyScreenState extends State<MobileMoneyScreen>
                       color: brandColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Icon(Icons.account_balance_wallet_outlined,
-                        color: brandColor, size: 20),
+                    child: Icon(
+                      Icons.account_balance_wallet_outlined,
+                      color: brandColor,
+                      size: 20,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   Column(
@@ -184,8 +215,7 @@ class _MobileMoneyScreenState extends State<MobileMoneyScreen>
                       const Text(
                         'Bank Balance',
                         style: TextStyle(
-                            color: AppColors.textSecondary,
-                            fontSize: 13),
+                            color: AppColors.textSecondary, fontSize: 13),
                       ),
                       Text(
                         'XAF ${banking.balance.toStringAsFixed(0)}',
@@ -217,8 +247,7 @@ class _MobileMoneyScreenState extends State<MobileMoneyScreen>
               hint: 'Enter phone number',
               controller: _phoneController,
               keyboardType: TextInputType.phone,
-              prefixIcon:
-                  Icon(Icons.phone_android, color: brandColor),
+              prefixIcon: Icon(Icons.phone_android, color: brandColor),
               validator: (val) =>
                   val == null || val.isEmpty ? 'Required' : null,
             ).animate().fadeIn(delay: 100.ms).slideY(begin: 0.1, end: 0),
@@ -240,14 +269,12 @@ class _MobileMoneyScreenState extends State<MobileMoneyScreen>
 
             const SizedBox(height: 40),
 
-            // Two action buttons using brand color
             Row(
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: banking.isTransferLoading
-                        ? null
-                        : () => _submit(true),
+                    onPressed:
+                        banking.isTransferLoading ? null : () => _submit(true),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: brandColor,
                       foregroundColor: Colors.black,
