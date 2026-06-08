@@ -83,20 +83,12 @@ class _BalanceCardState extends State<BalanceCard>
               ),
               GestureDetector(
                 onTap: () => setState(() => _isHidden = !_isHidden),
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  transitionBuilder: (child, animation) => RotationTransition(
-                    turns: Tween(begin: 0.1, end: 0.0).animate(animation),
-                    child: FadeTransition(opacity: animation, child: child),
-                  ),
-                  child: Icon(
-                    _isHidden
-                        ? Icons.visibility_off_outlined
-                        : Icons.visibility_outlined,
-                    key: ValueKey(_isHidden),
-                    color: AppColors.textSecondary,
-                    size: 20,
-                  ),
+                child: Icon(
+                  _isHidden
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  color: AppColors.textSecondary,
+                  size: 20,
                 ),
               ),
             ],
@@ -106,48 +98,44 @@ class _BalanceCardState extends State<BalanceCard>
 
           // Balance amount
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 400),
-            switchInCurve: Curves.easeOutCubic,
-            switchOutCurve: Curves.easeInCubic,
-            transitionBuilder: (child, animation) {
-              // Outgoing slides up + fades out, incoming slides up + fades in
-              final slideAnimation = Tween<Offset>(
-                begin: const Offset(0, 0.3),
-                end: Offset.zero,
-              ).animate(animation);
-              return FadeTransition(
-                opacity: animation,
-                child: SlideTransition(
-                  position: slideAnimation,
-                  child: child,
-                ),
-              );
-            },
+            duration: const Duration(milliseconds: 350),
+            switchInCurve: Curves.easeIn,
+            switchOutCurve: Curves.easeOut,
+            transitionBuilder: (child, animation) => FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
             child: _isHidden
-                ? const Text(
-                    'XAF ••••••',
+                ? const SizedBox(
                     key: ValueKey('hidden'),
-                    style: TextStyle(
-                      color: AppColors.textPrimary,
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: -1,
+                    width: double.infinity,
+                    child: Text(
+                      'XAF ••••••',
+                      style: TextStyle(
+                        color: AppColors.textPrimary,
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: -1,
+                      ),
                     ),
                   )
-                : AnimatedBuilder(
+                : SizedBox(
                     key: const ValueKey('visible'),
-                    animation: _animation,
-                    builder: (context, child) {
-                      return Text(
-                        'XAF ${_formatBalance(_animation.value)}',
-                        style: const TextStyle(
-                          color: AppColors.textPrimary,
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: -1,
-                        ),
-                      );
-                    },
+                    width: double.infinity,
+                    child: AnimatedBuilder(
+                      animation: _animation,
+                      builder: (context, child) {
+                        return Text(
+                          'XAF ${_formatBalance(_animation.value)}',
+                          style: const TextStyle(
+                            color: AppColors.textPrimary,
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: -1,
+                          ),
+                        );
+                      },
+                    ),
                   ),
           ),
 
