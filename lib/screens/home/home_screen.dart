@@ -115,7 +115,7 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 24),
 
                 // ── Balance card ─────────────────────────────────────────
-                BalanceCard(user: user),
+                BalanceCard(user: banking.user ?? user),
 
                 const SizedBox(height: 24),
 
