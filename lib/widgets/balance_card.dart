@@ -13,7 +13,8 @@ class BalanceCard extends StatefulWidget {
   State<BalanceCard> createState() => _BalanceCardState();
 }
 
-class _BalanceCardState extends State<BalanceCard> with SingleTickerProviderStateMixin {
+class _BalanceCardState extends State<BalanceCard>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
   bool _isHidden = false;
@@ -57,173 +58,141 @@ class _BalanceCardState extends State<BalanceCard> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 180,
       margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        gradient: const LinearGradient(
-          colors: [Color(0xFF4F52C5), Color(0xFF6366F1), Color(0xFF7C3AED)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.3),
-            blurRadius: 24,
-            offset: const Offset(0, 8),
-          ),
-        ],
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.divider, width: 1),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: Stack(
-          children: [
-            // Decorative elements
-            Positioned(
-              right: -40,
-              top: -40,
-              child: Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.1),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Top row: label + eye toggle
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Total Balance',
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 0.3,
                 ),
               ),
-            ),
-            Positioned(
-              left: -20,
-              bottom: -20,
-              child: Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.05),
+              GestureDetector(
+                onTap: () => setState(() => _isHidden = !_isHidden),
+                child: Icon(
+                  _isHidden
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  color: AppColors.textSecondary,
+                  size: 20,
                 ),
               ),
-            ),
-            
-            // Content
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
+            ],
+          ),
+
+          const SizedBox(height: 12),
+
+          // Balance amount
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: _isHidden
+                ? const Text(
+                    'XAF ••••••',
+                    key: ValueKey('hidden'),
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: -1,
+                    ),
+                  )
+                : AnimatedBuilder(
+                    key: const ValueKey('visible'),
+                    animation: _animation,
+                    builder: (context, child) {
+                      return Text(
+                        'XAF ${_formatBalance(_animation.value)}',
+                        style: const TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: -1,
+                        ),
+                      );
+                    },
+                  ),
+          ),
+
+          const SizedBox(height: 20),
+
+          // Divider
+          const Divider(color: AppColors.divider, height: 1),
+
+          const SizedBox(height: 16),
+
+          // Account row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        'Total Balance',
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.8),
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _isHidden = !_isHidden;
-                          });
-                        },
-                        child: Icon(
-                          _isHidden ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                          color: Colors.white.withValues(alpha: 0.8),
-                          size: 20,
-                        ),
-                      ),
-                    ],
+                  const Text(
+                    'ACCOUNT',
+                    style: TextStyle(
+                      color: AppColors.textTertiary,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 1.2,
+                    ),
                   ),
-                  const SizedBox(height: 10),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: _isHidden
-                        ? const Text(
-                            'XAF ••••••',
-                            key: ValueKey('hidden'),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        : AnimatedBuilder(
-                            key: const ValueKey('visible'),
-                            animation: _animation,
-                            builder: (context, child) {
-                              return Text(
-                                'XAF ${_formatBalance(_animation.value)}',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: -0.5,
-                                ),
-                              );
-                            },
-                          ),
-                  ),
-                  const Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'ACCOUNT',
-                            style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.6),
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            widget.user.maskedAccountNumber,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 1.5,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            'HOLDER',
-                            style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.6),
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            widget.user.fullName.split(' ').first.toUpperCase(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                  const SizedBox(height: 4),
+                  Text(
+                    widget.user.maskedAccountNumber,
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 1.5,
+                    ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const Text(
+                    'HOLDER',
+                    style: TextStyle(
+                      color: AppColors.textTertiary,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    widget.user.fullName.split(' ').first.toUpperCase(),
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
-    ).animate().fadeIn(duration: 500.ms).slideY(begin: 0.1, end: 0, curve: Curves.easeOut);
+    )
+        .animate()
+        .fadeIn(duration: 500.ms)
+        .slideY(begin: 0.1, end: 0, curve: Curves.easeOut);
   }
 }

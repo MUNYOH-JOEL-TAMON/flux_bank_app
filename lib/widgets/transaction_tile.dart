@@ -16,10 +16,13 @@ class TransactionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isCredit = transaction.isCredit;
-    final Color color = isCredit ? AppColors.credit : AppColors.textPrimary;
+    final Color amountColor =
+        isCredit ? AppColors.credit : AppColors.debit;
     final String amountSign = isCredit ? '+' : '-';
-    final String formattedAmount = NumberFormat('#,##0', 'en_US').format(transaction.amount);
-    final String formattedDate = DateFormat('MMM d, h:mm a').format(transaction.timestamp);
+    final String formattedAmount =
+        NumberFormat('#,##0', 'en_US').format(transaction.amount);
+    final String formattedDate =
+        DateFormat('MMM d, h:mm a').format(transaction.timestamp);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
@@ -27,14 +30,16 @@ class TransactionTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.divider, width: 1),
       ),
       child: Row(
         children: [
+          // Category icon in dark rounded square
           Container(
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.12),
+              color: AppColors.elevated,
               borderRadius: BorderRadius.circular(12),
             ),
             alignment: Alignment.center,
@@ -44,6 +49,7 @@ class TransactionTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
+          // Description
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,13 +78,14 @@ class TransactionTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
+          // Amount
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
                 '$amountSign$formattedAmount',
                 style: TextStyle(
-                  color: color,
+                  color: amountColor,
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                 ),
