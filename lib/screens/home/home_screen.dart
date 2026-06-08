@@ -152,6 +152,13 @@ class HomeScreen extends StatelessWidget {
                         onTap: () =>
                             Navigator.pushNamed(context, AppRouter.analytics),
                       ),
+                      _buildAction(
+                        context,
+                        icon: Icons.sports_esports_outlined,
+                        label: 'Quiz',
+                        onTap: () =>
+                            Navigator.pushNamed(context, AppRouter.quiz),
+                      ),
                     ],
                   ),
                 ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1, end: 0),
