@@ -16,12 +16,19 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = const [
-    HomeScreen(),
-    TransactionsScreen(),
-    CardsScreen(),
-    MobileMoneyScreen(),
-    ProfileScreen(),
+  // Tab indices
+  static const int momoTabIndex = 3;
+
+  void _switchToTab(int index) {
+    setState(() => _currentIndex = index);
+  }
+
+  List<Widget> get _pages => [
+    HomeScreen(onTopUp: () => _switchToTab(momoTabIndex)),
+    const TransactionsScreen(),
+    const CardsScreen(),
+    const MobileMoneyScreen(),
+    const ProfileScreen(),
   ];
 
   @override

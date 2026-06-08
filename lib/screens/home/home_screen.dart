@@ -12,7 +12,9 @@ import 'package:flux_bank/widgets/shimmer_list.dart';
 import 'package:flux_bank/widgets/section_header.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final VoidCallback? onTopUp;
+
+  const HomeScreen({super.key, this.onTopUp});
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +129,7 @@ class HomeScreen extends StatelessWidget {
                         context,
                         icon: Icons.arrow_upward_rounded,
                         label: 'Top Up',
-                        onTap: () {},
+                        onTap: () => onTopUp?.call(),
                       ),
                       _buildAction(
                         context,
