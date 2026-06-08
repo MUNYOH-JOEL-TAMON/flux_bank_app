@@ -1,0 +1,154 @@
+import 'package:flutter/material.dart';
+import 'package:flux_bank/theme/app_theme.dart';
+
+enum FluxButtonVariant { primary, secondary, danger, ghost }
+
+class FluxButton extends StatefulWidget {
+  final String label;
+  final VoidCallback? onPressed;
+  final bool isLoading;
+  final FluxButtonVariant variant;
+  final IconData? icon;
+  final double? width;
+  final double height;
+
+  const FluxButton(
+    this.label, {
+    super.key,
+    this.onPressed,
+    this.isLoading = false,
+    this.variant = FluxButtonVariant.primary,
+    this.icon,
+    this.width,
+    this.height = 52.0,
+  });
+
+  @override
+  State<FluxButton> createState() => _FluxButtonState();
+}
+
+class _FluxButtonState extends State<FluxButton> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 100),
+      upperBound: 0.05,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onTapDown(TapDownDetails details) {
+    if (widget.onPressed != null && !widget.isLoading) {
+      _controller.forward();
+    }
+  }
+
+  void _onTapUp(TapUpDetails details) {
+    _controller.reverse();
+  }
+
+  void _onTapCancel() {
+    _controller.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Color bg;
+    Color fg;
+    BorderSide border = BorderSide.none;
+
+    switch (widget.variant) {
+      case FluxButtonVariant.primary:
+        bg = AppColors.primary;
+        fg = AppColors.textPrimary;
+        break;
+      case FluxButtonVariant.secondary:
+        bg = AppColors.surface;
+        fg = AppColors.textPrimary;
+        border = const BorderSide(color: AppColors.divider);
+        break;
+      case FluxButtonVariant.danger:
+        bg = AppColors.debit;
+        fg = AppColors.textPrimary;
+        break;
+      case FluxButtonVariant.ghost:
+        bg = Colors.transparent;
+        fg = AppColors.primary;
+        break;
+    }
+
+    if (widget.onPressed == null) {
+      bg = bg.withValues(alpha: 0.5);
+      fg = fg.withValues(alpha: 0.5);
+    }
+
+    return GestureDetector(
+      onTapDown: _onTapDown,
+      onTapUp: _onTapUp,
+      onTapCancel: _onTapCancel,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: 1.0 - _controller.value,
+            child: child,
+          );
+        },
+        child: SizedBox(
+          width: widget.width ?? double.infinity,
+          height: widget.height,
+          child: ElevatedButton(
+            onPressed: widget.isLoading ? null : widget.onPressed,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: bg,
+              foregroundColor: fg,
+              disabledBackgroundColor: bg,
+              disabledForegroundColor: fg,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: border,
+              ),
+              elevation: 0,
+            ),
+            child: widget.isLoading
+                ? SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(fg),
+                    ),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (widget.icon != null) ...[
+                        Icon(widget.icon, size: 18),
+                        const SizedBox(width: 8),
+                      ],
+                      Text(
+                        widget.label,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                    ],
+                  ),
+          ),
+        ),
+      ),
+    );
+  }
+}
