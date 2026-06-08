@@ -166,21 +166,16 @@ class HomeScreen extends StatelessWidget {
 
                 const SizedBox(height: 16),
 
-                SizedBox(
-                  height: 160,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.only(left: 20, right: 8),
-                    children: [
-                      _buildMiniCard(
-                        label: 'VISA',
-                        last4: user.accountNumber.length >= 4
-                            ? user.accountNumber
-                                .substring(user.accountNumber.length - 4)
-                            : '4242',
-                        holderName: user.fullName,
-                      ),
-                    ],
+                // ── My Card (full width VISA) ────────────────────────
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: _buildMiniCard(
+                    label: 'VISA',
+                    last4: user.accountNumber.length >= 4
+                        ? user.accountNumber
+                            .substring(user.accountNumber.length - 4)
+                        : '4242',
+                    holderName: user.fullName,
                   ),
                 ).animate().fadeIn(delay: 300.ms),
 
@@ -341,7 +336,7 @@ class HomeScreen extends StatelessWidget {
   }) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(right: 12),
+      height: 160,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: const Color(0xFF1E1E1E),
