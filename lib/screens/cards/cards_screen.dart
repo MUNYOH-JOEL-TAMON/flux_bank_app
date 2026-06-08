@@ -19,19 +19,26 @@ class _CardsScreenState extends State<CardsScreen> {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<AuthProvider>().user;
-    if (user == null) return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    if (user == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
 
     return Scaffold(
+      backgroundColor: AppColors.shell,
       appBar: AppBar(
-        title: const Text('My Cards', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+        title: const Text('My Cards'),
         elevation: 0,
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.shell,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_circle_outline),
+            icon: const Icon(Icons.add_circle_outline,
+                color: AppColors.textPrimary),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Adding new cards is simulated.')),
+                const SnackBar(
+                    content: Text('Adding new cards is simulated.')),
               );
             },
           ),
@@ -42,21 +49,29 @@ class _CardsScreenState extends State<CardsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Flip card
             GestureDetector(
               onTap: () => setState(() => _isFlipped = !_isFlipped),
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 600),
-                transitionBuilder: (Widget child, Animation<double> animation) {
-                  final rotateAnim = Tween(begin: 3.14, end: 0.0).animate(animation);
+                transitionBuilder:
+                    (Widget child, Animation<double> animation) {
+                  final rotateAnim =
+                      Tween(begin: 3.14, end: 0.0).animate(animation);
                   return AnimatedBuilder(
                     animation: rotateAnim,
                     builder: (context, child) {
-                      final isUnder = (ValueKey(_isFlipped) != child!.key);
-                      var tilt = ((animation.value - 0.5).abs() - 0.5) * 0.003;
+                      final isUnder =
+                          (ValueKey(_isFlipped) != child!.key);
+                      var tilt =
+                          ((animation.value - 0.5).abs() - 0.5) * 0.003;
                       tilt *= isUnder ? -1.0 : 1.0;
-                      final value = isUnder ? min(rotateAnim.value, 3.14 / 2) : rotateAnim.value;
+                      final value = isUnder
+                          ? _clamp(rotateAnim.value, 0, 3.14 / 2)
+                          : rotateAnim.value;
                       return Transform(
-                        transform: Matrix4.rotationY(value)..setEntry(3, 0, tilt),
+                        transform: Matrix4.rotationY(value)
+                          ..setEntry(3, 0, tilt),
                         alignment: Alignment.center,
                         child: child,
                       );
@@ -66,139 +81,169 @@ class _CardsScreenState extends State<CardsScreen> {
                 },
                 child: _isFlipped
                     ? _buildCardBack(user.fullName)
-                    : _buildCardFront(user.fullName, user.accountNumber),
+                    : _buildCardFront(
+                        user.fullName, user.accountNumber),
               ),
             ).animate().fadeIn().slideY(begin: 0.1, end: 0),
-            
+
+            const SizedBox(height: 12),
+            Center(
+              child: Text(
+                'Tap card to flip',
+                style: const TextStyle(
+                    color: AppColors.textTertiary, fontSize: 12),
+              ),
+            ),
+
             const SizedBox(height: 32),
-            
+
+            // Card Settings
             const Text(
-              'Card Settings',
+              'CARD SETTINGS',
               style: TextStyle(
-                color: AppColors.textSecondary,
-                fontSize: 13,
+                color: AppColors.textTertiary,
+                fontSize: 11,
                 fontWeight: FontWeight.w600,
-                letterSpacing: 0.5,
+                letterSpacing: 1.2,
               ),
             ).animate().fadeIn(delay: 200.ms),
-            
-            const SizedBox(height: 16),
-            
+
+            const SizedBox(height: 12),
+
             Container(
               decoration: BoxDecoration(
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.divider),
               ),
               child: Column(
                 children: [
                   _buildSettingSwitch(
                     'Freeze Card',
                     'Temporarily disable your card',
-                    Icons.ac_unit,
+                    Icons.ac_unit_outlined,
                     _isFrozen,
                     (v) => setState(() => _isFrozen = v),
-                    AppColors.blue,
                   ),
-                  const Divider(),
+                  const Divider(color: AppColors.divider, height: 1),
                   _buildSettingSwitch(
                     'Online Payments',
                     'Allow internet transactions',
-                    Icons.language,
+                    Icons.language_outlined,
                     _onlinePayments,
                     (v) => setState(() => _onlinePayments = v),
-                    AppColors.credit,
                   ),
-                  const Divider(),
+                  const Divider(color: AppColors.divider, height: 1),
                   _buildSettingTile(
                     'Change PIN',
                     'Update your 4-digit card PIN',
-                    Icons.dialpad,
+                    Icons.dialpad_outlined,
                     () {},
                   ),
-                  const Divider(),
+                  const Divider(color: AppColors.divider, height: 1),
                   _buildSettingTile(
                     'Spending Limits',
                     'Set daily transaction limits',
-                    Icons.tune,
+                    Icons.tune_outlined,
                     () {},
                   ),
                 ],
               ),
             ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1, end: 0),
-            
+
             const SizedBox(height: 32),
-            
+
+            // Monthly summary
             const Text(
-              'Monthly Summary',
+              'MONTHLY SUMMARY',
               style: TextStyle(
-                color: AppColors.textSecondary,
-                fontSize: 13,
+                color: AppColors.textTertiary,
+                fontSize: 11,
                 fontWeight: FontWeight.w600,
-                letterSpacing: 0.5,
+                letterSpacing: 1.2,
               ),
             ).animate().fadeIn(delay: 400.ms),
-            
-            const SizedBox(height: 16),
-            
+
+            const SizedBox(height: 12),
+
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.divider),
               ),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Spent this month', style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
-                        const SizedBox(height: 8),
-                        const Text('XAF 145,000', style: TextStyle(color: AppColors.textPrimary, fontSize: 20, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 12),
-                        LinearProgressIndicator(
-                          value: 0.45,
-                          backgroundColor: AppColors.background,
-                          valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
-                          borderRadius: BorderRadius.circular(4),
-                          minHeight: 6,
-                        ),
-                        const SizedBox(height: 8),
-                        const Text('45% of XAF 320,000 limit', style: TextStyle(color: AppColors.textSecondary, fontSize: 11)),
-                      ],
+                  const Text(
+                    'Spent this month',
+                    style: TextStyle(
+                        color: AppColors.textSecondary, fontSize: 13),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'XAF 145,000',
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  const SizedBox(height: 16),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: LinearProgressIndicator(
+                      value: 0.45,
+                      backgroundColor: AppColors.elevated,
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                          AppColors.textPrimary),
+                      minHeight: 6,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    '45% of XAF 320,000 limit',
+                    style: TextStyle(
+                        color: AppColors.textSecondary, fontSize: 12),
                   ),
                 ],
               ),
             ).animate().fadeIn(delay: 500.ms).slideY(begin: 0.1, end: 0),
+
+            const SizedBox(height: 32),
           ],
         ),
       ),
     );
   }
 
+  double _clamp(double val, double min, double max) {
+    if (val < min) return min;
+    if (val > max) return max;
+    return val;
+  }
+
   Widget _buildCardFront(String name, String account) {
-    final act = account.length >= 4 ? account.substring(account.length - 4) : '1234';
+    final act = account.length >= 4
+        ? account.substring(account.length - 4)
+        : '4242';
     return Container(
       key: const ValueKey(false),
       width: double.infinity,
-      height: 220,
+      height: 210,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
+        color: const Color(0xFF1A1A1A),
         borderRadius: BorderRadius.circular(24),
-        gradient: const LinearGradient(
-          colors: [Color(0xFF2C2C2E), Color(0xFF1C1C1E)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        border: Border.all(color: AppColors.divider),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.5),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+            color: Colors.black.withValues(alpha: 0.4),
+            blurRadius: 24,
+            offset: const Offset(0, 12),
           ),
         ],
-        border: Border.all(color: AppColors.divider, width: 1),
       ),
       child: Stack(
         children: [
@@ -206,29 +251,45 @@ class _CardsScreenState extends State<CardsScreen> {
             alignment: Alignment.topRight,
             child: Text(
               'VISA',
-              style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+              ),
             ),
           ),
           Align(
             alignment: Alignment.topLeft,
-            child: Icon(Icons.wifi, color: Colors.white.withValues(alpha: 0.5), size: 32),
+            child: Icon(Icons.wifi,
+                color: Colors.white.withValues(alpha: 0.4), size: 28),
           ),
           Align(
             alignment: Alignment.centerLeft,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20),
-                const Text(
-                  '4532  ••••  ••••  ',
-                  style: TextStyle(color: Colors.white, fontSize: 22, letterSpacing: 2, fontFamily: 'monospace'),
-                ),
-                Text(
-                  act,
-                  style: const TextStyle(color: Colors.white, fontSize: 22, letterSpacing: 2, fontFamily: 'monospace'),
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Row(
+                children: [
+                  const Text(
+                    '4532  ••••  ••••  ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      letterSpacing: 2,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                  Text(
+                    act,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      letterSpacing: 2,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Align(
@@ -239,11 +300,19 @@ class _CardsScreenState extends State<CardsScreen> {
               children: [
                 Text(
                   'CARDHOLDER',
-                  style: TextStyle(color: Colors.white.withValues(alpha: 0.5), fontSize: 10, letterSpacing: 1),
+                  style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.4),
+                      fontSize: 10,
+                      letterSpacing: 1),
                 ),
                 Text(
                   name.toUpperCase(),
-                  style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600, letterSpacing: 1),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.8,
+                  ),
                 ),
               ],
             ),
@@ -256,11 +325,18 @@ class _CardsScreenState extends State<CardsScreen> {
               children: [
                 Text(
                   'VALID THRU',
-                  style: TextStyle(color: Colors.white.withValues(alpha: 0.5), fontSize: 10, letterSpacing: 1),
+                  style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.4),
+                      fontSize: 10,
+                      letterSpacing: 1),
                 ),
                 const Text(
                   '12/28',
-                  style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600, letterSpacing: 1),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),
@@ -274,31 +350,24 @@ class _CardsScreenState extends State<CardsScreen> {
     return Container(
       key: const ValueKey(true),
       width: double.infinity,
-      height: 220,
+      height: 210,
       decoration: BoxDecoration(
+        color: const Color(0xFF1A1A1A),
         borderRadius: BorderRadius.circular(24),
-        gradient: const LinearGradient(
-          colors: [Color(0xFF2C2C2E), Color(0xFF1C1C1E)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        border: Border.all(color: AppColors.divider),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.5),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+            color: Colors.black.withValues(alpha: 0.4),
+            blurRadius: 24,
+            offset: const Offset(0, 12),
           ),
         ],
-        border: Border.all(color: AppColors.divider, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 30),
-          Container(
-            height: 50,
-            color: Colors.black87,
-          ),
+          const SizedBox(height: 32),
+          Container(height: 44, color: Colors.black54),
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -306,16 +375,22 @@ class _CardsScreenState extends State<CardsScreen> {
               children: [
                 Expanded(
                   child: Container(
-                    height: 40,
-                    color: Colors.white.withValues(alpha: 0.8),
+                    height: 36,
+                    color: Colors.white.withValues(alpha: 0.85),
                   ),
                 ),
                 Container(
-                  height: 40,
+                  height: 36,
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   color: Colors.white,
                   alignment: Alignment.center,
-                  child: const Text('831', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic)),
+                  child: const Text(
+                    '831',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic),
+                  ),
                 ),
               ],
             ),
@@ -324,8 +399,10 @@ class _CardsScreenState extends State<CardsScreen> {
           Padding(
             padding: const EdgeInsets.all(24.0),
             child: Text(
-              'Issued by FLUX BANK. This card is property of the issuer and must be returned upon request.',
-              style: TextStyle(color: Colors.white.withValues(alpha: 0.4), fontSize: 10),
+              'Issued by FLUX BANK. Property of issuer; return upon request.',
+              style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.3),
+                  fontSize: 10),
             ),
           ),
         ],
@@ -333,34 +410,68 @@ class _CardsScreenState extends State<CardsScreen> {
     );
   }
 
-  Widget _buildSettingSwitch(String title, String subtitle, IconData icon, bool value, ValueChanged<bool> onChanged, Color iconColor) {
+  Widget _buildSettingSwitch(
+    String title,
+    String subtitle,
+    IconData icon,
+    bool value,
+    ValueChanged<bool> onChanged,
+  ) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       leading: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(color: iconColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
-        child: Icon(icon, color: iconColor, size: 20),
+        width: 38,
+        height: 38,
+        decoration: BoxDecoration(
+          color: AppColors.elevated,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        alignment: Alignment.center,
+        child: Icon(icon, color: AppColors.textSecondary, size: 18),
       ),
-      title: Text(title, style: const TextStyle(color: AppColors.textPrimary, fontSize: 15, fontWeight: FontWeight.w500)),
-      subtitle: Text(subtitle, style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
+      title: Text(title,
+          style: const TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 14,
+              fontWeight: FontWeight.w500)),
+      subtitle: Text(subtitle,
+          style: const TextStyle(
+              color: AppColors.textSecondary, fontSize: 12)),
       trailing: Switch(value: value, onChanged: onChanged),
     );
   }
 
-  Widget _buildSettingTile(String title, String subtitle, IconData icon, VoidCallback onTap) {
+  Widget _buildSettingTile(
+    String title,
+    String subtitle,
+    IconData icon,
+    VoidCallback onTap,
+  ) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       leading: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(color: AppColors.textSecondary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
-        child: Icon(icon, color: AppColors.textSecondary, size: 20),
+        width: 38,
+        height: 38,
+        decoration: BoxDecoration(
+          color: AppColors.elevated,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        alignment: Alignment.center,
+        child: Icon(icon, color: AppColors.textSecondary, size: 18),
       ),
-      title: Text(title, style: const TextStyle(color: AppColors.textPrimary, fontSize: 15, fontWeight: FontWeight.w500)),
-      subtitle: Text(subtitle, style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
-      trailing: const Icon(Icons.chevron_right, color: AppColors.textSecondary),
+      title: Text(title,
+          style: const TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 14,
+              fontWeight: FontWeight.w500)),
+      subtitle: Text(subtitle,
+          style: const TextStyle(
+              color: AppColors.textSecondary, fontSize: 12)),
+      trailing: const Icon(Icons.chevron_right,
+          color: AppColors.textTertiary, size: 20),
       onTap: onTap,
     );
   }
 }
-
-double min(double a, double b) => a < b ? a : b;
