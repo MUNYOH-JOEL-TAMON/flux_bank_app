@@ -180,12 +180,6 @@ class HomeScreen extends StatelessWidget {
                             : '4242',
                         holderName: user.fullName,
                       ),
-                      _buildMiniCard(
-                        label: 'Mastercard',
-                        last4: '8821',
-                        holderName: user.fullName,
-                        isDark: false,
-                      ),
                     ],
                   ),
                 ).animate().fadeIn(delay: 300.ms),
@@ -344,14 +338,13 @@ class HomeScreen extends StatelessWidget {
     required String label,
     required String last4,
     required String holderName,
-    bool isDark = true,
   }) {
     return Container(
-      width: 220,
+      width: double.infinity,
       margin: const EdgeInsets.only(right: 12),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E1E1E) : const Color(0xFF222222),
+        color: const Color(0xFF1E1E1E),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppColors.divider),
       ),
