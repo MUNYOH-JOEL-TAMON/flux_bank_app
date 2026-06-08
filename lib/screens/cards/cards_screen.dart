@@ -268,27 +268,14 @@ class _CardsScreenState extends State<CardsScreen> {
             alignment: Alignment.centerLeft,
             child: Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: Row(
-                children: [
-                  const Text(
-                    '4532  ••••  ••••  ',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      letterSpacing: 2,
-                      fontFamily: 'monospace',
-                    ),
-                  ),
-                  Text(
-                    act,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      letterSpacing: 2,
-                      fontFamily: 'monospace',
-                    ),
-                  ),
-                ],
+              child: Text(
+                '4532  ••••  ••••  $act',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  letterSpacing: 1.5,
+                  fontFamily: 'monospace',
+                ),
               ),
             ),
           ),

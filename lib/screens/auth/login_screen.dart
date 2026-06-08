@@ -53,23 +53,23 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 48),
+                const SizedBox(height: 32),
 
                 // "F" logo mark — white square, centered
                 Center(
                   child: Container(
-                    width: 64,
-                    height: 64,
+                    width: 56,
+                    height: 56,
                     decoration: BoxDecoration(
                       color: AppColors.textPrimary,
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     alignment: Alignment.center,
                     child: const Text(
                       'F',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 36,
+                        fontSize: 32,
                         fontWeight: FontWeight.w900,
                         letterSpacing: -1,
                       ),
@@ -77,29 +77,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ).animate().scale(duration: 400.ms, curve: Curves.easeOutBack),
 
-                const SizedBox(height: 40),
+                const SizedBox(height: 28),
 
                 const Text(
                   'Welcome back',
                   style: TextStyle(
                     color: AppColors.textPrimary,
-                    fontSize: 30,
+                    fontSize: 28,
                     fontWeight: FontWeight.w800,
                     letterSpacing: -0.5,
                   ),
                 ).animate().fadeIn(delay: 100.ms).slideX(begin: -0.1, end: 0),
 
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
 
                 const Text(
                   'Sign in to your FLUX account',
                   style: TextStyle(
                     color: AppColors.textSecondary,
-                    fontSize: 15,
+                    fontSize: 14,
                   ),
                 ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.1, end: 0),
 
-                const SizedBox(height: 40),
+                const SizedBox(height: 28),
 
                 // Error banner
                 if (auth.error != null) ...[
@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ).animate().fadeIn().slideY(begin: -0.1, end: 0),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
                 ],
 
                 FluxTextField(
@@ -143,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1, end: 0),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: 14),
 
                 FluxTextField(
                   label: 'Password',
@@ -160,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ).animate().fadeIn(delay: 400.ms).slideY(begin: 0.1, end: 0),
 
-                const SizedBox(height: 12),
+                const SizedBox(height: 4),
 
                 Align(
                   alignment: Alignment.centerRight,
@@ -177,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ).animate().fadeIn(delay: 500.ms),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
 
                 // Two buttons: outlined "Create account" + filled "Sign In"
                 Row(
@@ -201,13 +201,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.2, end: 0),
 
-                const SizedBox(height: 32),
+                const SizedBox(height: 24),
 
                 // "Or" divider
                 Row(
                   children: [
-                    const Expanded(
-                        child: Divider(color: AppColors.divider)),
+                    const Expanded(child: Divider(color: AppColors.divider)),
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
@@ -215,14 +214,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(color: AppColors.textSecondary),
                       ),
                     ),
-                    const Expanded(
-                        child: Divider(color: AppColors.divider)),
+                    const Expanded(child: Divider(color: AppColors.divider)),
                   ],
                 ).animate().fadeIn(delay: 700.ms),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
 
-                // Google social button (pill-shaped, dark with border)
+                // Google social button
                 _buildSocialButton(
                   label: 'Continue with Google',
                   icon: Icons.g_mobiledata,
@@ -238,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onTap: () {},
                 ).animate().fadeIn(delay: 900.ms),
 
-                const SizedBox(height: 40),
+                const SizedBox(height: 32),
               ],
             ),
           ),
