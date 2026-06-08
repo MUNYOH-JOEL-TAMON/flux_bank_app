@@ -33,43 +33,45 @@ class _MainShellState extends State<MainShell> {
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
+          color: AppColors.shell,
           border: Border(
-            top: BorderSide(color: AppColors.divider, width: 0.5),
+            top: BorderSide(color: AppColors.divider, width: 1),
           ),
         ),
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (index) => setState(() => _currentIndex = index),
           backgroundColor: Colors.transparent,
-          selectedItemColor: AppColors.primary,
+          selectedItemColor: AppColors.textPrimary,
           unselectedItemColor: AppColors.textSecondary,
           type: BottomNavigationBarType.fixed,
           selectedFontSize: 11,
           unselectedFontSize: 11,
+          elevation: 0,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              activeIcon: Icon(Icons.home),
+              icon: Icon(Icons.home_outlined, size: 22),
+              activeIcon: Icon(Icons.home, size: 22),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.receipt_long_outlined),
-              activeIcon: Icon(Icons.receipt_long),
+              icon: Icon(Icons.receipt_long_outlined, size: 22),
+              activeIcon: Icon(Icons.receipt_long, size: 22),
               label: 'History',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.credit_card_outlined),
-              activeIcon: Icon(Icons.credit_card),
+              icon: Icon(Icons.credit_card_outlined, size: 22),
+              activeIcon: Icon(Icons.credit_card, size: 22),
               label: 'Cards',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.phone_android_outlined),
-              activeIcon: Icon(Icons.phone_android),
+              icon: Icon(Icons.phone_android_outlined, size: 22),
+              activeIcon: Icon(Icons.phone_android, size: 22),
               label: 'MoMo',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              activeIcon: Icon(Icons.person),
+              icon: Icon(Icons.person_outline, size: 22),
+              activeIcon: Icon(Icons.person, size: 22),
               label: 'Profile',
             ),
           ],

@@ -20,21 +20,27 @@ class HomeScreen extends StatelessWidget {
     final banking = context.watch<BankingProvider>();
     final user = auth.user;
 
-    if (user == null) return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    if (user == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
 
     return Scaffold(
+      backgroundColor: AppColors.shell,
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () => banking.loadTransactions(user.uid),
-          color: AppColors.primary,
+          color: AppColors.textPrimary,
+          backgroundColor: AppColors.elevated,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 16),
-                
-                // Header
+                const SizedBox(height: 20),
+
+                // ── Header ──────────────────────────────────────────────
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
@@ -42,80 +48,172 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundColor: AppColors.primary,
+                          // Circular avatar with initials
+                          Container(
+                            width: 42,
+                            height: 42,
+                            decoration: BoxDecoration(
+                              color: AppColors.elevated,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: AppColors.divider),
+                            ),
+                            alignment: Alignment.center,
                             child: Text(
                               user.initials,
-                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                color: AppColors.textPrimary,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                           const SizedBox(width: 12),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          // "Hello," gray + name white
+                          Row(
                             children: [
-                              Text(
-                                'Good Morning,',
-                                style: TextStyle(color: AppColors.textSecondary.withValues(alpha: 0.8), fontSize: 12),
+                              const Text(
+                                'Hello, ',
+                                style: TextStyle(
+                                  color: AppColors.textSecondary,
+                                  fontSize: 16,
+                                ),
                               ),
                               Text(
                                 user.fullName.split(' ').first,
-                                style: const TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                  color: AppColors.textPrimary,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ],
                           ),
                         ],
                       ),
+                      // Bell icon
                       Container(
+                        width: 42,
+                        height: 42,
                         decoration: BoxDecoration(
+                          color: AppColors.elevated,
                           shape: BoxShape.circle,
                           border: Border.all(color: AppColors.divider),
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.notifications_outlined, size: 22),
+                          padding: EdgeInsets.zero,
+                          icon: const Icon(Icons.notifications_outlined,
+                              size: 20, color: AppColors.textPrimary),
                           onPressed: () {},
                         ),
                       ),
                     ],
                   ),
                 ).animate().fadeIn(),
-                
+
                 const SizedBox(height: 24),
-                
+
+                // ── Balance card ─────────────────────────────────────────
                 BalanceCard(user: user),
-                
+
                 const SizedBox(height: 24),
-                
-                // Quick Actions
+
+                // ── Quick actions row ────────────────────────────────────
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _buildActionItem(context, Icons.swap_horiz, 'Transfer', AppColors.primary, () => Navigator.pushNamed(context, AppRouter.transfer)),
-                      _buildActionItem(context, Icons.phone_android, 'MoMo', AppColors.mtnYellow, () {}), // MoMo handled by tab
-                      _buildActionItem(context, Icons.receipt_long, 'Pay Bills', AppColors.blue, () {}),
-                      _buildActionItem(context, Icons.sports_esports, 'Quiz', AppColors.quizPurple, () => Navigator.pushNamed(context, AppRouter.quiz)),
+                      _buildAction(
+                        context,
+                        icon: Icons.arrow_upward_rounded,
+                        label: 'Top Up',
+                        onTap: () {},
+                      ),
+                      _buildAction(
+                        context,
+                        icon: Icons.send_outlined,
+                        label: 'Send',
+                        onTap: () =>
+                            Navigator.pushNamed(context, AppRouter.transfer),
+                      ),
+                      _buildAction(
+                        context,
+                        icon: Icons.swap_horiz_rounded,
+                        label: 'Transfer',
+                        onTap: () =>
+                            Navigator.pushNamed(context, AppRouter.transfer),
+                      ),
+                      _buildAction(
+                        context,
+                        icon: Icons.sports_esports_outlined,
+                        label: 'Quiz',
+                        onTap: () =>
+                            Navigator.pushNamed(context, AppRouter.quiz),
+                      ),
                     ],
                   ),
                 ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1, end: 0),
-                
+
                 const SizedBox(height: 32),
-                
-                // Chart Section
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SectionHeader(title: 'Activity'),
-                ).animate().fadeIn(delay: 300.ms),
-                
+
+                // ── Horizontal card scroll (VISA / Mastercard style) ─────
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: const SectionHeader(title: 'My Cards'),
+                ).animate().fadeIn(delay: 250.ms),
+
                 const SizedBox(height: 16),
-                
+
+                SizedBox(
+                  height: 160,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.only(left: 20, right: 8),
+                    children: [
+                      _buildMiniCard(
+                        label: 'VISA',
+                        last4: user.accountNumber.length >= 4
+                            ? user.accountNumber
+                                .substring(user.accountNumber.length - 4)
+                            : '4242',
+                        holderName: user.fullName,
+                      ),
+                      _buildMiniCard(
+                        label: 'Mastercard',
+                        last4: '8821',
+                        holderName: user.fullName,
+                        isDark: false,
+                      ),
+                    ],
+                  ),
+                ).animate().fadeIn(delay: 300.ms),
+
+                const SizedBox(height: 32),
+
+                // ── Mini line chart ──────────────────────────────────────
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: const SectionHeader(title: 'Activity'),
+                ).animate().fadeIn(delay: 350.ms),
+
+                const SizedBox(height: 16),
+
                 if (banking.isLoading && banking.transactions.isEmpty)
-                  const Padding(padding: EdgeInsets.all(20), child: ShimmerList(itemCount: 1, itemHeight: 140))
+                  const Padding(
+                    padding: EdgeInsets.all(20),
+                    child: ShimmerList(itemCount: 1, itemHeight: 130),
+                  )
                 else
                   Container(
-                    height: 140,
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    height: 130,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: AppColors.divider),
+                    ),
                     child: LineChart(
                       LineChartData(
                         gridData: const FlGridData(show: false),
@@ -123,55 +221,71 @@ class HomeScreen extends StatelessWidget {
                         borderData: FlBorderData(show: false),
                         lineBarsData: [
                           LineChartBarData(
-                            spots: banking.weeklyBalanceData.asMap().entries.map((e) => FlSpot(e.key.toDouble(), e.value)).toList(),
+                            spots: banking.weeklyBalanceData
+                                .asMap()
+                                .entries
+                                .map((e) =>
+                                    FlSpot(e.key.toDouble(), e.value))
+                                .toList(),
                             isCurved: true,
-                            color: AppColors.primary,
-                            barWidth: 3,
+                            color: AppColors.textPrimary,
+                            barWidth: 2,
                             isStrokeCapRound: true,
                             dotData: const FlDotData(show: false),
                             belowBarData: BarAreaData(
                               show: true,
-                              color: AppColors.primary.withValues(alpha: 0.1),
+                              color: AppColors.textPrimary
+                                  .withValues(alpha: 0.05),
                             ),
                           ),
                         ],
                       ),
                     ),
                   ).animate().fadeIn(delay: 400.ms),
-                
-                const SizedBox(height: 24),
-                
-                // Recent Transactions
+
+                const SizedBox(height: 32),
+
+                // ── Recent Transactions ──────────────────────────────────
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: SectionHeader(
-                    title: 'Recent Transactions',
-                    actionLabel: 'See All',
-                    onAction: () {}, // Handled by bottom nav tab
+                    title: 'Transactions',
+                    actionLabel: 'See all',
+                    onAction: () {},
                   ),
-                ).animate().fadeIn(delay: 500.ms),
-                
+                ).animate().fadeIn(delay: 450.ms),
+
                 const SizedBox(height: 16),
-                
+
                 if (banking.isLoading && banking.transactions.isEmpty)
-                  const Padding(padding: EdgeInsets.symmetric(horizontal: 20.0), child: ShimmerList(itemCount: 3))
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: ShimmerList(itemCount: 3),
+                  )
                 else if (banking.recentTransactions.isEmpty)
                   const Center(
                     child: Padding(
                       padding: EdgeInsets.all(32.0),
-                      child: Text('No recent transactions.', style: TextStyle(color: AppColors.textSecondary)),
+                      child: Text(
+                        'No recent transactions.',
+                        style: TextStyle(color: AppColors.textSecondary),
+                      ),
                     ),
                   )
                 else
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Column(
                       children: banking.recentTransactions.map((tx) {
-                        return TransactionTile(transaction: tx).animate().fadeIn().slideY(begin: 0.1, end: 0);
+                        return TransactionTile(transaction: tx)
+                            .animate()
+                            .fadeIn()
+                            .slideY(begin: 0.1, end: 0);
                       }).toList(),
                     ),
                   ),
-                  
+
                 const SizedBox(height: 32),
               ],
             ),
@@ -181,7 +295,13 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildActionItem(BuildContext context, IconData icon, String label, Color color, VoidCallback onTap) {
+  // Quick action item — dark rounded container, white icon + label
+  Widget _buildAction(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -190,18 +310,131 @@ class HomeScreen extends StatelessWidget {
             width: 56,
             height: 56,
             decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.12),
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColors.divider),
             ),
-            child: Icon(icon, color: color, size: 26),
+            alignment: Alignment.center,
+            child: Icon(icon, color: AppColors.textPrimary, size: 22),
           ),
           const SizedBox(height: 8),
           Text(
             label,
             style: const TextStyle(
-              color: AppColors.textPrimary,
+              color: AppColors.textSecondary,
               fontSize: 12,
               fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Mini VISA/Mastercard dark card
+  Widget _buildMiniCard({
+    required String label,
+    required String last4,
+    required String holderName,
+    bool isDark = true,
+  }) {
+    return Container(
+      width: 220,
+      margin: const EdgeInsets.only(right: 12),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E1E1E) : const Color(0xFF222222),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: Stack(
+        children: [
+          // Card type label
+          Align(
+            alignment: Alignment.topRight,
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
+          // NFC icon
+          Align(
+            alignment: Alignment.topLeft,
+            child: Icon(Icons.wifi,
+                color: Colors.white.withValues(alpha: 0.4), size: 22),
+          ),
+          // Card number
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: Text(
+                '•••• •••• •••• $last4',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  letterSpacing: 1.5,
+                  fontFamily: 'monospace',
+                ),
+              ),
+            ),
+          ),
+          // Holder name bottom-left
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'CARDHOLDER',
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.4),
+                    fontSize: 9,
+                    letterSpacing: 1,
+                  ),
+                ),
+                Text(
+                  holderName.toUpperCase(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Expiry bottom-right
+          const Align(
+            alignment: Alignment.bottomRight,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  'VALID',
+                  style: TextStyle(
+                    color: Color(0x66FFFFFF),
+                    fontSize: 9,
+                    letterSpacing: 1,
+                  ),
+                ),
+                Text(
+                  '12/28',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
