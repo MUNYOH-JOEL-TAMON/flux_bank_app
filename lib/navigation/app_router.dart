@@ -18,6 +18,7 @@ class AppRouter {
   static const String home = '/home';
   static const String transfer = '/transfer';
   static const String quiz = '/quiz';
+  static const String analytics = '/analytics';
 
   static Map<String, WidgetBuilder> get routes => {
         splash: (context) => const SplashScreen(),
@@ -28,6 +29,7 @@ class AppRouter {
         home: (context) => const MainShell(),
         transfer: (context) => const TransferScreen(),
         quiz: (context) => const QuizScreen(),
+        analytics: (context) => const AnalyticsScreen(),
       };
 
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {

@@ -147,10 +147,10 @@ class HomeScreen extends StatelessWidget {
                       ),
                       _buildAction(
                         context,
-                        icon: Icons.sports_esports_outlined,
-                        label: 'Quiz',
+                        icon: Icons.bar_chart_rounded,
+                        label: 'Analytics',
                         onTap: () =>
-                            Navigator.pushNamed(context, AppRouter.quiz),
+                            Navigator.pushNamed(context, AppRouter.analytics),
                       ),
                     ],
                   ),
@@ -223,12 +223,19 @@ class HomeScreen extends StatelessWidget {
                         borderData: FlBorderData(show: false),
                         lineBarsData: [
                           LineChartBarData(
-                            spots: banking.weeklyBalanceData
-                                .asMap()
-                                .entries
-                                .map((e) =>
-                                    FlSpot(e.key.toDouble(), e.value))
-                                .toList(),
+                            spots: () {
+                              final raw = banking.weeklyBalanceData;
+                              final minVal = raw.reduce((a, b) => a < b ? a : b);
+                              final maxVal = raw.reduce((a, b) => a > b ? a : b);
+                              final range = maxVal - minVal;
+                              // Normalise to 0–100 so chart always shows variation
+                              return raw.asMap().entries.map((e) {
+                                final y = range > 0
+                                    ? ((e.value - minVal) / range) * 100
+                                    : 50.0;
+                                return FlSpot(e.key.toDouble(), y);
+                              }).toList();
+                            }(),
                             isCurved: true,
                             color: AppColors.textPrimary,
                             barWidth: 2,
@@ -236,8 +243,7 @@ class HomeScreen extends StatelessWidget {
                             dotData: const FlDotData(show: false),
                             belowBarData: BarAreaData(
                               show: true,
-                              color: AppColors.textPrimary
-                                  .withValues(alpha: 0.05),
+                              color: AppColors.textPrimary.withValues(alpha: 0.05),
                             ),
                           ),
                         ],
