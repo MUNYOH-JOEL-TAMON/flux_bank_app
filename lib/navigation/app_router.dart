@@ -7,6 +7,7 @@ import 'package:flux_bank/screens/auth/register_screen.dart';
 import 'package:flux_bank/screens/auth/forgot_password_screen.dart';
 import 'package:flux_bank/screens/transfer/transfer_screen.dart';
 import 'package:flux_bank/screens/quiz/quiz_screen.dart';
+import 'package:flux_bank/screens/analytics/analytics_screen.dart';
 
 class AppRouter {
   static const String splash = '/';
