@@ -23,7 +23,7 @@ class SectionHeader extends StatelessWidget {
           style: const TextStyle(
             color: AppColors.textPrimary,
             fontSize: 17,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w600,
           ),
         ),
         if (actionLabel != null)
@@ -32,9 +32,9 @@ class SectionHeader extends StatelessWidget {
             child: Text(
               actionLabel!,
               style: const TextStyle(
-                color: AppColors.primary,
+                color: AppColors.textSecondary,
                 fontSize: 13,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),

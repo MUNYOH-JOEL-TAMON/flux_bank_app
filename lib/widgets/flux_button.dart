@@ -27,7 +27,8 @@ class FluxButton extends StatefulWidget {
   State<FluxButton> createState() => _FluxButtonState();
 }
 
-class _FluxButtonState extends State<FluxButton> with SingleTickerProviderStateMixin {
+class _FluxButtonState extends State<FluxButton>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
   @override
@@ -68,27 +69,33 @@ class _FluxButtonState extends State<FluxButton> with SingleTickerProviderStateM
 
     switch (widget.variant) {
       case FluxButtonVariant.primary:
-        bg = AppColors.primary;
-        fg = AppColors.textPrimary;
+        // White background, black text
+        bg = AppColors.textPrimary;
+        fg = Colors.black;
         break;
       case FluxButtonVariant.secondary:
-        bg = AppColors.surface;
+        // Transparent bg, white border, white text
+        bg = Colors.transparent;
         fg = AppColors.textPrimary;
-        border = const BorderSide(color: AppColors.divider);
+        border = const BorderSide(color: AppColors.textPrimary, width: 1.5);
         break;
       case FluxButtonVariant.danger:
+        // Red bg, white text
         bg = AppColors.debit;
         fg = AppColors.textPrimary;
         break;
       case FluxButtonVariant.ghost:
+        // Transparent, white text
         bg = Colors.transparent;
-        fg = AppColors.primary;
+        fg = AppColors.textPrimary;
         break;
     }
 
     if (widget.onPressed == null) {
-      bg = bg.withValues(alpha: 0.5);
-      fg = fg.withValues(alpha: 0.5);
+      bg = bg == Colors.transparent
+          ? bg
+          : bg.withValues(alpha: 0.4);
+      fg = fg.withValues(alpha: 0.4);
     }
 
     return GestureDetector(
@@ -111,8 +118,8 @@ class _FluxButtonState extends State<FluxButton> with SingleTickerProviderStateM
             style: ElevatedButton.styleFrom(
               backgroundColor: bg,
               foregroundColor: fg,
-              disabledBackgroundColor: bg,
-              disabledForegroundColor: fg,
+              disabledBackgroundColor: bg.withValues(alpha: 0.4),
+              disabledForegroundColor: fg.withValues(alpha: 0.4),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
                 side: border,

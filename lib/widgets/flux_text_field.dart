@@ -58,7 +58,9 @@ class _FluxTextFieldState extends State<FluxTextField> {
     if (widget.obscureText) {
       actualSuffixIcon = IconButton(
         icon: Icon(
-          _obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+          _obscure
+              ? Icons.visibility_off_outlined
+              : Icons.visibility_outlined,
           color: AppColors.textSecondary,
           size: 20,
         ),
@@ -102,9 +104,36 @@ class _FluxTextFieldState extends State<FluxTextField> {
             fontSize: 15,
           ),
           decoration: InputDecoration(
+            filled: true,
+            fillColor: AppColors.surface,
             hintText: widget.hint,
+            hintStyle: const TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 14,
+            ),
             prefixIcon: widget.prefixIcon,
             suffixIcon: actualSuffixIcon,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: AppColors.divider),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(
+                  color: AppColors.textPrimary, width: 1.5),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide:
+                  const BorderSide(color: AppColors.error, width: 1),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide:
+                  const BorderSide(color: AppColors.error, width: 1.5),
+            ),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           ),
         ),
       ],

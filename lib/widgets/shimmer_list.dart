@@ -16,7 +16,7 @@ class ShimmerList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: AppColors.surface,
-      highlightColor: const Color(0xFF3F3F46),
+      highlightColor: AppColors.elevated,
       child: Column(
         children: List.generate(
           itemCount,
