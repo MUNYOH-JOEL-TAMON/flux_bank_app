@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _navigate() async {
     await Future.delayed(const Duration(milliseconds: 2800));
     if (!mounted) return;
-    
+
     final auth = context.read<AuthProvider>();
     if (auth.isAuthenticated) {
       Navigator.pushReplacementNamed(context, AppRouter.home);
@@ -39,74 +39,71 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // "F" logo — white rounded square, no gradient
             Container(
               width: 90,
               height: 90,
               decoration: BoxDecoration(
+                color: AppColors.textPrimary,
                 borderRadius: BorderRadius.circular(24),
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF4F52C5), Color(0xFF6366F1)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.4),
-                    blurRadius: 30,
-                    offset: const Offset(0, 10),
-                  ),
-                ],
               ),
               alignment: Alignment.center,
               child: const Text(
                 'F',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 48,
                   fontWeight: FontWeight.w900,
                   letterSpacing: -2,
                 ),
               ),
-            ).animate()
-              .scale(begin: const Offset(0.4, 0.4), duration: 600.ms, curve: Curves.elasticOut)
-              .fadeIn(duration: 400.ms),
-              
+            )
+                .animate()
+                .scale(
+                  begin: const Offset(0.4, 0.4),
+                  duration: 600.ms,
+                  curve: Curves.elasticOut,
+                )
+                .fadeIn(duration: 400.ms),
+
             const SizedBox(height: 20),
-            
+
             const Text(
               'FLUX',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.textPrimary,
                 fontSize: 36,
                 fontWeight: FontWeight.w900,
-                letterSpacing: 8,
+                letterSpacing: 10,
               ),
-            ).animate()
-              .fadeIn(delay: 400.ms, duration: 500.ms)
-              .slideY(begin: 0.3, end: 0, curve: Curves.easeOut),
-              
+            )
+                .animate()
+                .fadeIn(delay: 400.ms, duration: 500.ms)
+                .slideY(begin: 0.3, end: 0, curve: Curves.easeOut),
+
             const SizedBox(height: 8),
-            
-            Text(
+
+            const Text(
               'Banking Reimagined',
               style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.5),
+                color: AppColors.textSecondary,
                 fontSize: 14,
                 letterSpacing: 2,
               ),
-            ).animate()
-              .fadeIn(delay: 600.ms, duration: 500.ms),
-              
+            ).animate().fadeIn(delay: 600.ms, duration: 500.ms),
+
             const SizedBox(height: 60),
-            
+
             SizedBox(
               width: 120,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(4),
                 child: LinearProgressIndicator(
-                  backgroundColor: Colors.white.withValues(alpha: 0.1),
-                  valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
-                  minHeight: 4,
+                  backgroundColor:
+                      AppColors.textPrimary.withValues(alpha: 0.1),
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                      AppColors.textPrimary),
+                  minHeight: 3,
                 ),
               ),
             ).animate().fadeIn(delay: 800.ms),
