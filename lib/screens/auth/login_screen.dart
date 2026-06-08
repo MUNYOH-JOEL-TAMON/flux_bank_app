@@ -179,12 +179,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 16),
 
-                // Two buttons: outlined "Create account" + filled "Sign In"
+                // Two buttons: outlined "Register" + filled "Sign In"
                 Row(
                   children: [
                     Expanded(
                       child: FluxButton(
-                        'Create account',
+                        'Register',
                         variant: FluxButtonVariant.secondary,
                         onPressed: () =>
                             Navigator.pushNamed(context, AppRouter.register),
