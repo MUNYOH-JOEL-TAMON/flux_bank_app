@@ -161,7 +161,7 @@ class HomeScreen extends StatelessWidget {
                 // ── Horizontal card scroll (VISA / Mastercard style) ─────
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: const SectionHeader(title: 'My Cards'),
+                  child: const SectionHeader(title: 'My Card'),
                 ).animate().fadeIn(delay: 250.ms),
 
                 const SizedBox(height: 16),

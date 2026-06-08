@@ -28,7 +28,7 @@ class _CardsScreenState extends State<CardsScreen> {
     return Scaffold(
       backgroundColor: AppColors.shell,
       appBar: AppBar(
-        title: const Text('My Cards'),
+        title: const Text('My Card'),
         elevation: 0,
         backgroundColor: AppColors.shell,
         actions: [
