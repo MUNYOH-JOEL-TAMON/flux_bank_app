@@ -13,8 +13,9 @@ import 'package:flux_bank/widgets/section_header.dart';
 
 class HomeScreen extends StatelessWidget {
   final VoidCallback? onTopUp;
+  final VoidCallback? onSeeAll;
 
-  const HomeScreen({super.key, this.onTopUp});
+  const HomeScreen({super.key, this.onTopUp, this.onSeeAll});
 
   @override
   Widget build(BuildContext context) {
@@ -130,13 +131,6 @@ class HomeScreen extends StatelessWidget {
                         icon: Icons.arrow_upward_rounded,
                         label: 'Top Up',
                         onTap: () => onTopUp?.call(),
-                      ),
-                      _buildAction(
-                        context,
-                        icon: Icons.send_outlined,
-                        label: 'Send',
-                        onTap: () =>
-                            Navigator.pushNamed(context, AppRouter.transfer),
                       ),
                       _buildAction(
                         context,
@@ -332,7 +326,7 @@ class HomeScreen extends StatelessWidget {
                   child: SectionHeader(
                     title: 'Transactions',
                     actionLabel: 'See all',
-                    onAction: () {},
+                    onAction: () => onSeeAll?.call(),
                   ),
                 ).animate().fadeIn(delay: 450.ms),
 

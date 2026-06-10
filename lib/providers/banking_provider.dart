@@ -30,7 +30,7 @@ class BankingProvider extends ChangeNotifier {
   }
 
   List<TransactionModel> get recentTransactions {
-    return _transactions.take(5).toList();
+    return _transactions.take(3).toList();
   }
 
   List<double> get weeklyBalanceData {

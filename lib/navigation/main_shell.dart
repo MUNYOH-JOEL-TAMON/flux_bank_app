@@ -24,7 +24,10 @@ class _MainShellState extends State<MainShell> {
   }
 
   List<Widget> get _pages => [
-    HomeScreen(onTopUp: () => _switchToTab(momoTabIndex)),
+    HomeScreen(
+      onTopUp: () => _switchToTab(momoTabIndex),
+      onSeeAll: () => _switchToTab(1),
+    ),
     const TransactionsScreen(),
     const CardsScreen(),
     const MobileMoneyScreen(),
