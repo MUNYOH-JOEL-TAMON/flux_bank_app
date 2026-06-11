@@ -19,11 +19,11 @@ class DemoService {
       fullName: fullName,
       email: email,
       phone: phone,
-      balance: 2450000.0,
+      balance: 0.0,
       accountNumber: DateTime.now().millisecondsSinceEpoch.toString().substring(3),
       createdAt: DateTime.now(),
     );
-    _seedTransactions();
+    // Removed _seedTransactions() so user starts with 0 balance and no history.
   }
 
   void clearUser() {

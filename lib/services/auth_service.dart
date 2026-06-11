@@ -49,7 +49,7 @@ class AuthService {
           fullName: fullName,
           email: email,
           phone: phone,
-          balance: 250000.0,
+          balance: 0.0,
           accountNumber: _generateAccountNumber(),
           createdAt: DateTime.now(),
         );
