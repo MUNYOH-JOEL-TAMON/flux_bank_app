@@ -61,14 +61,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 56,
                     height: 56,
                     decoration: BoxDecoration(
-                      color: AppColors.textPrimary,
+                      color: AppColors.primary,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     alignment: Alignment.center,
                     child: const Text(
                       'F',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 32,
                         fontWeight: FontWeight.w900,
                         letterSpacing: -1,

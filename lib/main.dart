@@ -46,7 +46,7 @@ class FluxApp extends StatelessWidget {
     return MaterialApp(
       title: 'FLUX Bank',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.dark,
+      theme: AppTheme.light,
       initialRoute: AppRouter.splash,
       onGenerateRoute: AppRouter.onGenerateRoute,
     );

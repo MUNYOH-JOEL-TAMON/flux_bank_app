@@ -3,22 +3,22 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppColors {
   // Shell / scaffold
-  static const Color shell = Color(0xFF0A0A0A);
+  static const Color shell = Color(0xFFF8F9FA); // Off-white app background
   // Card / surface
-  static const Color background = Color(0xFF1A1A1A);
-  static const Color surface = Color(0xFF1A1A1A);
-  // Elevated surface
-  static const Color elevated = Color(0xFF222222);
+  static const Color background = Color(0xFFFFFFFF);
+  static const Color surface = Color(0xFFFFFFFF);
+  // Elevated surface (e.g. for cream accents)
+  static const Color elevated = Color(0xFFFBE5C8); // Cream color from the image
   // Border / divider
-  static const Color divider = Color(0xFF2A2A2A);
+  static const Color divider = Color(0xFFE2E8F0);
 
   // Text
-  static const Color textPrimary = Color(0xFFFFFFFF);
-  static const Color textSecondary = Color(0xFF888888);
-  static const Color textTertiary = Color(0xFF555555);
+  static const Color textPrimary = Color(0xFF1E293B); // Dark slate
+  static const Color textSecondary = Color(0xFF64748B); // Slate gray
+  static const Color textTertiary = Color(0xFF94A3B8);
 
-  // Accent — white only
-  static const Color primary = Color(0xFFFFFFFF);
+  // Primary brand
+  static const Color primary = Color(0xFF2B4D66); // Dark blue from the image
 
   // Semantic
   static const Color credit = Color(0xFF4CAF50);
@@ -32,20 +32,21 @@ class AppColors {
 }
 
 class AppTheme {
-  static ThemeData get dark {
+  static ThemeData get light {
     final baseTextTheme =
-        GoogleFonts.interTextTheme(ThemeData.dark().textTheme);
+        GoogleFonts.interTextTheme(ThemeData.light().textTheme);
 
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.dark,
+      brightness: Brightness.light,
+      primaryColor: AppColors.primary,
       scaffoldBackgroundColor: AppColors.shell,
-      colorScheme: const ColorScheme.dark(
+      colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
-        secondary: AppColors.textSecondary,
+        secondary: AppColors.elevated,
         surface: AppColors.surface,
         error: AppColors.error,
-        onPrimary: Colors.black,
+        onPrimary: Colors.white,
         onSurface: AppColors.textPrimary,
       ),
       textTheme: baseTextTheme.copyWith(
@@ -80,7 +81,7 @@ class AppTheme {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide:
-              const BorderSide(color: AppColors.textPrimary, width: 1.5),
+              const BorderSide(color: AppColors.primary, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -97,8 +98,8 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.textPrimary,
-          foregroundColor: Colors.black,
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
           minimumSize: const Size(double.infinity, 52),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -108,14 +109,15 @@ class AppTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: AppColors.textPrimary,
+          foregroundColor: AppColors.primary,
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: AppColors.shell,
-        selectedItemColor: AppColors.textPrimary,
+        backgroundColor: AppColors.surface,
+        selectedItemColor: AppColors.primary,
         unselectedItemColor: AppColors.textSecondary,
-        elevation: 0,
+        elevation: 8,
+        type: BottomNavigationBarType.fixed,
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.shell,
@@ -136,28 +138,29 @@ class AppTheme {
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
           if (states.contains(WidgetState.selected)) {
-            return Colors.black;
+            return Colors.white;
           }
           return AppColors.textSecondary;
         }),
         trackColor: WidgetStateProperty.resolveWith<Color>((states) {
           if (states.contains(WidgetState.selected)) {
-            return AppColors.textPrimary;
+            return AppColors.primary;
           }
-          return AppColors.elevated;
+          return AppColors.divider;
         }),
       ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: AppColors.elevated,
+        backgroundColor: AppColors.textPrimary,
         contentTextStyle:
-            const TextStyle(color: AppColors.textPrimary),
+            const TextStyle(color: Colors.white),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: AppColors.textPrimary,
+        color: AppColors.primary,
       ),
     );
   }
 }
+
