@@ -53,13 +53,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final auth = context.watch<AuthProvider>();
 
     return Scaffold(
-      backgroundColor: AppColors.shell,
+      backgroundColor: AppColors.primary,
       appBar: AppBar(
-        backgroundColor: AppColors.shell,
+        backgroundColor: AppColors.primary,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new,
-              size: 18, color: AppColors.textPrimary),
+              size: 18, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
@@ -67,7 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
+            color: Colors.white,
           ),
         ),
       ),
@@ -84,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const Text(
                   'Join FLUX',
                   style: TextStyle(
-                    color: AppColors.textPrimary,
+                    color: Colors.white,
                     fontSize: 28,
                     fontWeight: FontWeight.w800,
                     letterSpacing: -0.5,
@@ -96,7 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const Text(
                   'Set up your free account in seconds',
                   style: TextStyle(
-                    color: AppColors.textSecondary,
+                    color: Colors.white70,
                     fontSize: 15,
                   ),
                 ).animate().fadeIn(delay: 100.ms).slideX(begin: -0.1, end: 0),
@@ -133,6 +133,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 FluxTextField(
                   label: 'Full Name',
+                  labelStyle: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
                   hint: 'Enter your full name',
                   controller: _nameController,
                   prefixIcon: const Icon(Icons.person_outline,
@@ -152,6 +157,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 FluxTextField(
                   label: 'Phone Number',
+                  labelStyle: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
                   hint: 'Enter your phone number',
                   controller: _phoneController,
                   keyboardType: TextInputType.phone,
@@ -163,6 +173,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 FluxTextField(
                   label: 'Email',
+                  labelStyle: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
                   hint: 'Enter your email',
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -179,6 +194,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 FluxTextField(
                   label: 'Password',
+                  labelStyle: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
                   hint: 'Create a password',
                   controller: _passwordController,
                   obscureText: true,
@@ -199,6 +219,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 FluxTextField(
                   label: 'Confirm Password',
+                  labelStyle: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
                   hint: 'Confirm your password',
                   controller: _confirmController,
                   obscureText: true,
@@ -230,14 +255,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       const Text(
                         'Already have an account? ',
-                        style: TextStyle(color: AppColors.textSecondary),
+                        style: TextStyle(color: Colors.white70),
                       ),
                       GestureDetector(
                         onTap: () => Navigator.pop(context),
                         child: const Text(
                           'Sign In',
                           style: TextStyle(
-                            color: AppColors.textPrimary,
+                            color: Colors.white,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

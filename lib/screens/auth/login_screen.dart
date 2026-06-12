@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final auth = context.watch<AuthProvider>();
 
     return Scaffold(
-      backgroundColor: AppColors.shell,
+      backgroundColor: AppColors.primary,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -61,14 +61,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 56,
                     height: 56,
                     decoration: BoxDecoration(
-                      color: AppColors.primary,
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     alignment: Alignment.center,
                     child: const Text(
                       'F',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppColors.primary,
                         fontSize: 32,
                         fontWeight: FontWeight.w900,
                         letterSpacing: -1,
@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const Text(
                   'Welcome back',
                   style: TextStyle(
-                    color: AppColors.textPrimary,
+                    color: Colors.white,
                     fontSize: 28,
                     fontWeight: FontWeight.w800,
                     letterSpacing: -0.5,
@@ -94,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const Text(
                   'Sign in to your FLUX account',
                   style: TextStyle(
-                    color: AppColors.textSecondary,
+                    color: Colors.white70,
                     fontSize: 14,
                   ),
                 ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.1, end: 0),
@@ -131,6 +131,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 FluxTextField(
                   label: 'Email',
+                  labelStyle: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
                   hint: 'Enter your email',
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -147,6 +152,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 FluxTextField(
                   label: 'Password',
+                  labelStyle: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
                   hint: 'Enter your password',
                   controller: _passwordController,
                   obscureText: true,
@@ -170,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: const Text(
                       'Forgot password?',
                       style: TextStyle(
-                        color: AppColors.textSecondary,
+                        color: Colors.white70,
                         fontSize: 13,
                       ),
                     ),
@@ -186,6 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: FluxButton(
                         'Sign Up',
                         variant: FluxButtonVariant.secondary,
+                        isDark: true,
                         onPressed: () =>
                             Navigator.pushNamed(context, AppRouter.register),
                       ),
@@ -206,15 +217,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 // "Or" divider
                 Row(
                   children: [
-                    const Expanded(child: Divider(color: AppColors.divider)),
+                    const Expanded(child: Divider(color: Colors.white24)),
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
                         'Or',
-                        style: TextStyle(color: AppColors.textSecondary),
+                        style: TextStyle(color: Colors.white70),
                       ),
                     ),
-                    const Expanded(child: Divider(color: AppColors.divider)),
+                    const Expanded(child: Divider(color: Colors.white24)),
                   ],
                 ).animate().fadeIn(delay: 700.ms),
 
