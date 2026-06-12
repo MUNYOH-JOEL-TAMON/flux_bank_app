@@ -87,6 +87,12 @@ class ProfileScreen extends StatelessWidget {
                   user.phone ?? 'Not set',
                   Icons.phone_outlined,
                 ),
+                const Divider(color: AppColors.divider, height: 1),
+                _buildInfoRow(
+                  'Account Type',
+                  'Savings',
+                  Icons.account_balance_wallet_outlined,
+                ),
               ],
             ),
 
@@ -98,13 +104,7 @@ class ProfileScreen extends StatelessWidget {
               delay: 400,
               children: [
                 _buildToggleRow(
-                    'Push Notifications', true, Icons.notifications_outlined),
-                const Divider(color: AppColors.divider, height: 1),
-                _buildToggleRow(
                     'Biometric Login', false, Icons.fingerprint_outlined),
-                const Divider(color: AppColors.divider, height: 1),
-                _buildToggleRow(
-                    'Dark Mode', true, Icons.dark_mode_outlined),
               ],
             ),
 
