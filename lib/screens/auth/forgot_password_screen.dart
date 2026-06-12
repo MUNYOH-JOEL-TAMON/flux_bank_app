@@ -42,13 +42,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     final loc = context.watch<LocalizationProvider>();
 
     return Scaffold(
-      backgroundColor: AppColors.primary,
       appBar: AppBar(
-        backgroundColor: AppColors.primary,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new,
-              size: 18, color: Colors.white),
+              size: 18, color: AppColors.textPrimary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -56,7 +54,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+            color: AppColors.textPrimary,
           ),
         ),
       ),
@@ -94,7 +92,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             Text(
               loc.t('check_inbox'),
               style: const TextStyle(
-                color: Colors.white,
+                color: AppColors.textPrimary,
                 fontSize: 24,
                 fontWeight: FontWeight.w800,
               ),
@@ -106,7 +104,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               '${loc.t('reset_link_sent')}${_emailController.text}',
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Colors.white70,
+                color: AppColors.textSecondary,
                 fontSize: 15,
                 height: 1.5,
               ),
@@ -154,7 +152,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               loc.t('forgot_password_title'),
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Colors.white,
+                color: AppColors.textPrimary,
                 fontSize: 24,
                 fontWeight: FontWeight.w800,
                 letterSpacing: -0.5,
@@ -167,7 +165,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               loc.t('forgot_password_desc'),
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Colors.white70,
+                color: AppColors.textSecondary,
                 fontSize: 15,
                 height: 1.5,
               ),
@@ -206,7 +204,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             FluxTextField(
               label: loc.t('email'),
               labelStyle: const TextStyle(
-                color: Colors.white70,
+                color: AppColors.textPrimary,
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
               ),

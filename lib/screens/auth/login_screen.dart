@@ -46,7 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final loc = context.watch<LocalizationProvider>();
 
     return Scaffold(
-      backgroundColor: AppColors.primary,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -63,14 +62,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 56,
                     height: 56,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.primary,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     alignment: Alignment.center,
                     child: const Text(
                       'F',
                       style: TextStyle(
-                        color: AppColors.primary,
+                        color: Colors.white,
                         fontSize: 32,
                         fontWeight: FontWeight.w900,
                         letterSpacing: -1,
@@ -85,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text(
                     loc.t('welcome_back'),
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
                       fontSize: 28,
                       fontWeight: FontWeight.w800,
                       letterSpacing: -0.5,
@@ -99,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text(
                     loc.t('sign_in_to_flux'),
                     style: const TextStyle(
-                      color: Colors.white70,
+                      color: AppColors.textSecondary,
                       fontSize: 14,
                     ),
                   ),
@@ -138,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 FluxTextField(
                   label: loc.t('email'),
                   labelStyle: const TextStyle(
-                    color: Colors.white70,
+                    color: AppColors.textPrimary,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
@@ -159,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 FluxTextField(
                   label: loc.t('password'),
                   labelStyle: const TextStyle(
-                    color: Colors.white70,
+                    color: AppColors.textPrimary,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
@@ -186,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       loc.t('forgot_password_q'),
                       style: const TextStyle(
-                        color: Colors.white70,
+                        color: AppColors.textPrimary,
                         fontSize: 13,
                       ),
                     ),
@@ -202,7 +201,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: FluxButton(
                         loc.t('sign_up'),
                         variant: FluxButtonVariant.secondary,
-                        isDark: true,
                         onPressed: () =>
                             Navigator.pushNamed(context, AppRouter.register),
                       ),
@@ -223,15 +221,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 // "Or" divider
                 Row(
                   children: [
-                    const Expanded(child: Divider(color: Colors.white24)),
+                    const Expanded(child: Divider(color: AppColors.divider)),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
                         loc.t('or'),
-                        style: const TextStyle(color: Colors.white70),
+                        style: const TextStyle(color: AppColors.textSecondary),
                       ),
                     ),
-                    const Expanded(child: Divider(color: Colors.white24)),
+                    const Expanded(child: Divider(color: AppColors.divider)),
                   ],
                 ).animate().fadeIn(delay: 700.ms),
 

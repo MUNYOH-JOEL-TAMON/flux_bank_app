@@ -55,13 +55,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final loc = context.watch<LocalizationProvider>();
 
     return Scaffold(
-      backgroundColor: AppColors.primary,
       appBar: AppBar(
-        backgroundColor: AppColors.primary,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new,
-              size: 18, color: Colors.white),
+              size: 18, color: AppColors.textPrimary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -69,7 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+            color: AppColors.textPrimary,
           ),
         ),
       ),
@@ -86,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Text(
                   loc.t('join_flux'),
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                     fontSize: 28,
                     fontWeight: FontWeight.w800,
                     letterSpacing: -0.5,
@@ -98,7 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Text(
                   loc.t('setup_free_account'),
                   style: const TextStyle(
-                    color: Colors.white70,
+                    color: AppColors.textSecondary,
                     fontSize: 15,
                   ),
                 ).animate().fadeIn(delay: 100.ms).slideX(begin: -0.1, end: 0),
@@ -136,7 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 FluxTextField(
                   label: loc.t('full_name'),
                   labelStyle: const TextStyle(
-                    color: Colors.white70,
+                    color: AppColors.textPrimary,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
@@ -160,7 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 FluxTextField(
                   label: loc.t('phone_number'),
                   labelStyle: const TextStyle(
-                    color: Colors.white70,
+                    color: AppColors.textPrimary,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
@@ -176,7 +174,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 FluxTextField(
                   label: loc.t('email'),
                   labelStyle: const TextStyle(
-                    color: Colors.white70,
+                    color: AppColors.textPrimary,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
@@ -197,7 +195,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 FluxTextField(
                   label: loc.t('password'),
                   labelStyle: const TextStyle(
-                    color: Colors.white70,
+                    color: AppColors.textPrimary,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
@@ -222,7 +220,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 FluxTextField(
                   label: loc.t('confirm_password'),
                   labelStyle: const TextStyle(
-                    color: Colors.white70,
+                    color: AppColors.textPrimary,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
@@ -257,14 +255,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       Text(
                         loc.t('already_have_account'),
-                        style: const TextStyle(color: Colors.white70),
+                        style: const TextStyle(color: AppColors.textSecondary),
                       ),
                       GestureDetector(
                         onTap: () => Navigator.pop(context),
                         child: Text(
                           loc.t('sign_in'),
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: AppColors.primary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
