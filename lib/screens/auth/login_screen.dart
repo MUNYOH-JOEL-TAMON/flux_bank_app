@@ -79,23 +79,27 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 28),
 
-                const Text(
-                  'Welcome back',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.5,
+                Center(
+                  child: const Text(
+                    'Welcome back',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -0.5,
+                    ),
                   ),
                 ).animate().fadeIn(delay: 100.ms).slideX(begin: -0.1, end: 0),
 
                 const SizedBox(height: 6),
 
-                const Text(
-                  'Sign in to your FLUX account',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
+                Center(
+                  child: const Text(
+                    'Sign in to your FLUX account',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                    ),
                   ),
                 ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.1, end: 0),
 
