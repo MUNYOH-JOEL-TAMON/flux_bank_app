@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:flux_bank/models/user_model.dart';
+import 'package:flux_bank/providers/localization_provider.dart';
 import 'package:flux_bank/theme/app_theme.dart';
 
 class BalanceCard extends StatefulWidget {
@@ -57,6 +59,8 @@ class _BalanceCardState extends State<BalanceCard>
 
   @override
   Widget build(BuildContext context) {
+    final loc = context.watch<LocalizationProvider>();
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(24),
@@ -72,9 +76,9 @@ class _BalanceCardState extends State<BalanceCard>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Total Balance',
-                style: TextStyle(
+              Text(
+                loc.t('total_balance'),
+                style: const TextStyle(
                   color: Colors.white70,
                   fontSize: 13,
                   fontWeight: FontWeight.w500,
@@ -153,9 +157,9 @@ class _BalanceCardState extends State<BalanceCard>
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'ACCOUNT',
-                    style: TextStyle(
+                  Text(
+                    loc.t('account'),
+                    style: const TextStyle(
                       color: Colors.white54,
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
@@ -177,9 +181,9 @@ class _BalanceCardState extends State<BalanceCard>
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Text(
-                    'HOLDER',
-                    style: TextStyle(
+                  Text(
+                    loc.t('holder'),
+                    style: const TextStyle(
                       color: Colors.white54,
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
