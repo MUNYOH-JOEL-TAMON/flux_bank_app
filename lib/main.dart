@@ -7,6 +7,7 @@ import 'package:flux_bank/navigation/app_router.dart';
 import 'package:flux_bank/providers/auth_provider.dart';
 import 'package:flux_bank/providers/banking_provider.dart';
 import 'package:flux_bank/providers/quiz_provider.dart';
+import 'package:flux_bank/providers/localization_provider.dart';
 
 bool kFirebaseAvailable = false;
 
@@ -32,6 +33,7 @@ void main() async {
           update: (_, auth, banking) => banking!..updateUser(auth.user),
         ),
         ChangeNotifierProvider(create: (_) => QuizProvider()),
+        ChangeNotifierProvider(create: (_) => LocalizationProvider()),
       ],
       child: const FluxApp(),
     ),
