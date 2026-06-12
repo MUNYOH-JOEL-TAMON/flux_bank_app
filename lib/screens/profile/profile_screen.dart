@@ -103,14 +103,32 @@ class ProfileScreen extends StatelessWidget {
               title: 'SETTINGS',
               delay: 400,
               children: [
-                _buildToggleRow(
-                    'Biometric Login', false, Icons.fingerprint_outlined),
+                SettingsToggleRow(
+                  label: 'Biometric Login',
+                  initialValue: false,
+                  icon: Icons.fingerprint_outlined,
+                ),
                 const Divider(color: AppColors.divider, height: 1),
-                _buildToggleRow(
-                    'Two-Factor Authentication (2FA)', false, Icons.security_outlined),
+                SettingsToggleRow(
+                  label: 'Two-Factor Authentication (2FA)',
+                  initialValue: false,
+                  icon: Icons.security_outlined,
+                ),
                 const Divider(color: AppColors.divider, height: 1),
                 _buildActionRow(
-                    'Change Password', Icons.lock_outline, () {}),
+                    'Change Password', Icons.lock_outline, () async {
+                  final success = await auth.resetPassword(user.email);
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(success 
+                          ? 'Password reset link sent to your email.' 
+                          : auth.error ?? 'Failed to send reset link.'),
+                        backgroundColor: success ? AppColors.credit : AppColors.error,
+                      ),
+                    );
+                  }
+                }),
               ],
             ),
 
@@ -192,27 +210,6 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildToggleRow(
-      String label, bool initialValue, IconData icon) {
-    return Padding(
-      padding:
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        children: [
-          Icon(icon, color: AppColors.textSecondary, size: 18),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              label,
-              style: const TextStyle(
-                  color: AppColors.textPrimary, fontSize: 14),
-            ),
-          ),
-          Switch(value: initialValue, onChanged: (v) {}),
-        ],
-      ),
-    );
-  }
 
   Widget _buildActionRow(String label, IconData icon, VoidCallback onTap) {
     return InkWell(
@@ -230,9 +227,62 @@ class ProfileScreen extends StatelessWidget {
                     color: AppColors.textPrimary, fontSize: 14),
               ),
             ),
-            const Icon(Icons.chevron_right, color: AppColors.textSecondary, size: 20),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SettingsToggleRow extends StatefulWidget {
+  final String label;
+  final bool initialValue;
+  final IconData icon;
+
+  const SettingsToggleRow({
+    super.key,
+    required this.label,
+    required this.initialValue,
+    required this.icon,
+  });
+
+  @override
+  State<SettingsToggleRow> createState() => _SettingsToggleRowState();
+}
+
+class _SettingsToggleRowState extends State<SettingsToggleRow> {
+  late bool _value;
+
+  @override
+  void initState() {
+    super.initState();
+    _value = widget.initialValue;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        children: [
+          Icon(widget.icon, color: AppColors.textSecondary, size: 18),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              widget.label,
+              style: const TextStyle(
+                  color: AppColors.textPrimary, fontSize: 14),
+            ),
+          ),
+          Switch(
+            value: _value,
+            onChanged: (v) {
+              setState(() {
+                _value = v;
+              });
+            },
+          ),
+        ],
       ),
     );
   }
