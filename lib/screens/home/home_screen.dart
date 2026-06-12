@@ -342,7 +342,7 @@ class HomeScreen extends StatelessWidget {
                     child: ShimmerList(itemCount: 3),
                   )
                 else if (banking.recentTransactions.isEmpty)
-                  const Center(
+                  Center(
                     child: Padding(
                       padding: const EdgeInsets.all(32.0),
                       child: Text(
@@ -491,7 +491,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           // Expiry bottom-right
-          const Align(
+          Align(
             alignment: Alignment.bottomRight,
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -505,7 +505,7 @@ class HomeScreen extends StatelessWidget {
                     letterSpacing: 1,
                   ),
                 ),
-                Text(
+                const Text(
                   '12/28',
                   style: TextStyle(
                     color: Colors.white,
