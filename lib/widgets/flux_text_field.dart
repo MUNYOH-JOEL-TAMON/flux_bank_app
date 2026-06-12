@@ -54,6 +54,14 @@ class _FluxTextFieldState extends State<FluxTextField> {
   }
 
   @override
+  void didUpdateWidget(FluxTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.obscureText != widget.obscureText) {
+      _obscure = widget.obscureText;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     Widget? actualSuffixIcon = widget.suffixIcon;
 

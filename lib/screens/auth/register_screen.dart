@@ -81,23 +81,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 const SizedBox(height: 16),
 
-                Text(
-                  loc.t('join_flux'),
-                  style: const TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 28,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.5,
+                Center(
+                  child: Text(
+                    loc.t('join_flux'),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 28,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -0.5,
+                    ),
                   ),
                 ).animate().fadeIn().slideX(begin: -0.1, end: 0),
 
                 const SizedBox(height: 8),
 
-                Text(
-                  loc.t('setup_free_account'),
-                  style: const TextStyle(
-                    color: AppColors.textSecondary,
-                    fontSize: 15,
+                Center(
+                  child: Text(
+                    loc.t('setup_free_account'),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 15,
+                    ),
                   ),
                 ).animate().fadeIn(delay: 100.ms).slideX(begin: -0.1, end: 0),
 
