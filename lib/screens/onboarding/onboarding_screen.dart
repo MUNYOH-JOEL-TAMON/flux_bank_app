@@ -78,10 +78,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextButton.icon(
                   onPressed: () => loc.toggleLanguage(),
-                  icon: const Icon(Icons.language, color: Colors.white, size: 18),
+                  icon: const Icon(Icons.language, color: AppColors.textPrimary, size: 18),
                   label: Text(
                     loc.locale.toUpperCase(),
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -108,12 +108,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.2), width: 2),
+                                color: AppColors.primary.withValues(alpha: 0.2), width: 2),
                           ),
                           child: Icon(
                             slide.icon,
                             size: 56,
-                            color: Colors.white,
+                            color: AppColors.primary,
                           ),
                         ).animate().scale(
                               duration: 600.ms,
@@ -124,7 +124,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           slide.title,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: AppColors.textPrimary,
                             fontSize: 28,
                             fontWeight: FontWeight.w800,
                             letterSpacing: -0.5,
@@ -135,7 +135,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           slide.subtitle,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
-                            color: Colors.white70,
+                            color: AppColors.textSecondary,
                             fontSize: 16,
                             height: 1.6,
                           ),
@@ -159,8 +159,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   height: 8,
                   decoration: BoxDecoration(
                     color: _currentPage == index
-                        ? Colors.white
-                        : Colors.white24,
+                        ? AppColors.primary
+                        : AppColors.divider,
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
@@ -179,7 +179,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     child: FluxButton(
                       loc.t('skip'),
                       variant: FluxButtonVariant.secondary,
-                      isDark: true,
                       onPressed: _goToLogin,
                     ),
                   ),
