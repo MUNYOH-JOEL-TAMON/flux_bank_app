@@ -18,6 +18,7 @@ class FluxTextField extends StatefulWidget {
   final int? maxLines;
   final TextInputAction? textInputAction;
   final FocusNode? focusNode;
+  final TextStyle? labelStyle;
 
   const FluxTextField({
     super.key,
@@ -36,6 +37,7 @@ class FluxTextField extends StatefulWidget {
     this.maxLines = 1,
     this.textInputAction,
     this.focusNode,
+    this.labelStyle,
   });
 
   @override
@@ -79,7 +81,7 @@ class _FluxTextFieldState extends State<FluxTextField> {
         if (widget.label != null) ...[
           Text(
             widget.label!,
-            style: const TextStyle(
+            style: widget.labelStyle ?? const TextStyle(
               color: AppColors.textSecondary,
               fontSize: 13,
               fontWeight: FontWeight.w500,

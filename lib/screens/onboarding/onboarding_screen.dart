@@ -68,7 +68,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final isLast = _currentPage == _slides.length - 1;
 
     return Scaffold(
-      backgroundColor: AppColors.shell,
+      backgroundColor: AppColors.primary,
       body: SafeArea(
         child: Column(
           children: [
@@ -95,12 +95,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                                color: AppColors.divider, width: 2),
+                                color: Colors.white.withValues(alpha: 0.2), width: 2),
                           ),
                           child: Icon(
                             slide.icon,
                             size: 56,
-                            color: AppColors.textPrimary,
+                            color: Colors.white,
                           ),
                         ).animate().scale(
                               duration: 600.ms,
@@ -111,7 +111,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           slide.title,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
-                            color: AppColors.textPrimary,
+                            color: Colors.white,
                             fontSize: 28,
                             fontWeight: FontWeight.w800,
                             letterSpacing: -0.5,
@@ -122,7 +122,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           slide.subtitle,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
-                            color: AppColors.textSecondary,
+                            color: Colors.white70,
                             fontSize: 16,
                             height: 1.6,
                           ),
@@ -146,8 +146,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   height: 8,
                   decoration: BoxDecoration(
                     color: _currentPage == index
-                        ? AppColors.textPrimary
-                        : AppColors.textTertiary,
+                        ? Colors.white
+                        : Colors.white24,
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
@@ -166,6 +166,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     child: FluxButton(
                       'Skip',
                       variant: FluxButtonVariant.secondary,
+                      isDark: true,
                       onPressed: _goToLogin,
                     ),
                   ),

@@ -11,6 +11,7 @@ class FluxButton extends StatefulWidget {
   final IconData? icon;
   final double? width;
   final double height;
+  final bool isDark;
 
   const FluxButton(
     this.label, {
@@ -21,6 +22,7 @@ class FluxButton extends StatefulWidget {
     this.icon,
     this.width,
     this.height = 52.0,
+    this.isDark = false,
   });
 
   @override
@@ -74,10 +76,10 @@ class _FluxButtonState extends State<FluxButton>
         fg = Colors.black;
         break;
       case FluxButtonVariant.secondary:
-        // Transparent bg, white border, white text
+        // Transparent bg, border, text
         bg = Colors.transparent;
-        fg = AppColors.textPrimary;
-        border = const BorderSide(color: AppColors.textPrimary, width: 1.5);
+        fg = widget.isDark ? Colors.white : AppColors.textPrimary;
+        border = BorderSide(color: widget.isDark ? Colors.white : AppColors.textPrimary, width: 1.5);
         break;
       case FluxButtonVariant.danger:
         // Red bg, white text
