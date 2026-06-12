@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:flux_bank/navigation/app_router.dart';
 import 'package:flux_bank/providers/auth_provider.dart';
+import 'package:flux_bank/providers/localization_provider.dart';
 import 'package:flux_bank/theme/app_theme.dart';
 import 'package:flux_bank/widgets/flux_button.dart';
 import 'package:flux_bank/widgets/flux_text_field.dart';
@@ -51,6 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
+    final loc = context.watch<LocalizationProvider>();
 
     return Scaffold(
       backgroundColor: AppColors.primary,
@@ -62,9 +64,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               size: 18, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Create Account',
-          style: TextStyle(
+        title: Text(
+          loc.t('create_account'),
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Colors.white,
@@ -81,9 +83,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 const SizedBox(height: 16),
 
-                const Text(
-                  'Join FLUX',
-                  style: TextStyle(
+                Text(
+                  loc.t('join_flux'),
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 28,
                     fontWeight: FontWeight.w800,
@@ -93,9 +95,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 const SizedBox(height: 8),
 
-                const Text(
-                  'Set up your free account in seconds',
-                  style: TextStyle(
+                Text(
+                  loc.t('setup_free_account'),
+                  style: const TextStyle(
                     color: Colors.white70,
                     fontSize: 15,
                   ),
@@ -132,22 +134,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ],
 
                 FluxTextField(
-                  label: 'Full Name',
+                  label: loc.t('full_name'),
                   labelStyle: const TextStyle(
                     color: Colors.white70,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
-                  hint: 'Enter your full name',
+                  hint: loc.t('full_name_hint'),
                   controller: _nameController,
                   prefixIcon: const Icon(Icons.person_outline,
                       color: AppColors.textSecondary, size: 20),
                   validator: (val) {
                     if (val == null || val.isEmpty) {
-                      return 'Name is required';
+                      return loc.t('name_required');
                     }
                     if (val.trim().split(' ').length < 2) {
-                      return 'Enter your first and last name';
+                      return loc.t('name_invalid');
                     }
                     return null;
                   },
@@ -156,13 +158,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 16),
 
                 FluxTextField(
-                  label: 'Phone Number',
+                  label: loc.t('phone_number'),
                   labelStyle: const TextStyle(
                     color: Colors.white70,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
-                  hint: 'Enter your phone number',
+                  hint: loc.t('phone_number_hint'),
                   controller: _phoneController,
                   keyboardType: TextInputType.phone,
                   prefixIcon: const Icon(Icons.phone_outlined,
@@ -172,20 +174,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 16),
 
                 FluxTextField(
-                  label: 'Email',
+                  label: loc.t('email'),
                   labelStyle: const TextStyle(
                     color: Colors.white70,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
-                  hint: 'Enter your email',
+                  hint: loc.t('email_hint'),
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   prefixIcon: const Icon(Icons.mail_outline,
                       color: AppColors.textSecondary, size: 20),
                   validator: (val) {
-                    if (val == null || val.isEmpty) return 'Email is required';
-                    if (!val.contains('@')) return 'Enter a valid email';
+                    if (val == null || val.isEmpty) return loc.t('email_required');
+                    if (!val.contains('@')) return loc.t('invalid_email');
                     return null;
                   },
                 ).animate().fadeIn(delay: 400.ms).slideY(begin: 0.1, end: 0),
@@ -193,23 +195,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 16),
 
                 FluxTextField(
-                  label: 'Password',
+                  label: loc.t('password'),
                   labelStyle: const TextStyle(
                     color: Colors.white70,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
-                  hint: 'Create a password',
+                  hint: loc.t('create_password_hint'),
                   controller: _passwordController,
                   obscureText: true,
                   prefixIcon: const Icon(Icons.lock_outline,
                       color: AppColors.textSecondary, size: 20),
                   validator: (val) {
                     if (val == null || val.isEmpty) {
-                      return 'Password is required';
+                      return loc.t('password_required');
                     }
                     if (val.length < 6) {
-                      return 'Password must be at least 6 characters';
+                      return loc.t('password_min_length');
                     }
                     return null;
                   },
@@ -218,20 +220,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 16),
 
                 FluxTextField(
-                  label: 'Confirm Password',
+                  label: loc.t('confirm_password'),
                   labelStyle: const TextStyle(
                     color: Colors.white70,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
-                  hint: 'Confirm your password',
+                  hint: loc.t('confirm_password_hint'),
                   controller: _confirmController,
                   obscureText: true,
                   prefixIcon: const Icon(Icons.lock_outline,
                       color: AppColors.textSecondary, size: 20),
                   validator: (val) {
                     if (val != _passwordController.text) {
-                      return 'Passwords do not match';
+                      return loc.t('passwords_not_match');
                     }
                     return null;
                   },
@@ -241,7 +243,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 // Filled white "Create Account" button
                 FluxButton(
-                  'Create Account',
+                  loc.t('create_account'),
                   onPressed: _register,
                   isLoading: auth.isLoading,
                 ).animate().fadeIn(delay: 700.ms).slideY(begin: 0.2, end: 0),
@@ -253,15 +255,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        'Already have an account? ',
-                        style: TextStyle(color: Colors.white70),
+                      Text(
+                        loc.t('already_have_account'),
+                        style: const TextStyle(color: Colors.white70),
                       ),
                       GestureDetector(
                         onTap: () => Navigator.pop(context),
-                        child: const Text(
-                          'Sign In',
-                          style: TextStyle(
+                        child: Text(
+                          loc.t('sign_in'),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
                           ),

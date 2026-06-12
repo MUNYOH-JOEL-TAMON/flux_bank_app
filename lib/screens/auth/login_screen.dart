@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:flux_bank/navigation/app_router.dart';
 import 'package:flux_bank/providers/auth_provider.dart';
+import 'package:flux_bank/providers/localization_provider.dart';
 import 'package:flux_bank/theme/app_theme.dart';
 import 'package:flux_bank/widgets/flux_button.dart';
 import 'package:flux_bank/widgets/flux_text_field.dart';
@@ -42,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
+    final loc = context.watch<LocalizationProvider>();
 
     return Scaffold(
       backgroundColor: AppColors.primary,
@@ -80,9 +82,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 28),
 
                 Center(
-                  child: const Text(
-                    'Welcome back',
-                    style: TextStyle(
+                  child: Text(
+                    loc.t('welcome_back'),
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 28,
                       fontWeight: FontWeight.w800,
@@ -94,9 +96,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 6),
 
                 Center(
-                  child: const Text(
-                    'Sign in to your FLUX account',
-                    style: TextStyle(
+                  child: Text(
+                    loc.t('sign_in_to_flux'),
+                    style: const TextStyle(
                       color: Colors.white70,
                       fontSize: 14,
                     ),
@@ -134,20 +136,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
 
                 FluxTextField(
-                  label: 'Email',
+                  label: loc.t('email'),
                   labelStyle: const TextStyle(
                     color: Colors.white70,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
-                  hint: 'Enter your email',
+                  hint: loc.t('email_hint'),
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   prefixIcon: const Icon(Icons.mail_outline,
                       color: AppColors.textSecondary, size: 20),
                   validator: (val) {
-                    if (val == null || val.isEmpty) return 'Email is required';
-                    if (!val.contains('@')) return 'Enter a valid email';
+                    if (val == null || val.isEmpty) return loc.t('email_required');
+                    if (!val.contains('@')) return loc.t('invalid_email');
                     return null;
                   },
                 ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1, end: 0),
@@ -155,20 +157,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 14),
 
                 FluxTextField(
-                  label: 'Password',
+                  label: loc.t('password'),
                   labelStyle: const TextStyle(
                     color: Colors.white70,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
-                  hint: 'Enter your password',
+                  hint: loc.t('password_hint'),
                   controller: _passwordController,
                   obscureText: true,
                   prefixIcon: const Icon(Icons.lock_outline,
                       color: AppColors.textSecondary, size: 20),
                   validator: (val) {
                     if (val == null || val.isEmpty) {
-                      return 'Password is required';
+                      return loc.t('password_required');
                     }
                     return null;
                   },
@@ -181,9 +183,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: TextButton(
                     onPressed: () =>
                         Navigator.pushNamed(context, AppRouter.forgotPassword),
-                    child: const Text(
-                      'Forgot password?',
-                      style: TextStyle(
+                    child: Text(
+                      loc.t('forgot_password_q'),
+                      style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 13,
                       ),
@@ -198,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Expanded(
                       child: FluxButton(
-                        'Sign Up',
+                        loc.t('sign_up'),
                         variant: FluxButtonVariant.secondary,
                         isDark: true,
                         onPressed: () =>
@@ -208,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: FluxButton(
-                        'Sign In',
+                        loc.t('sign_in'),
                         onPressed: _signIn,
                         isLoading: auth.isLoading,
                       ),
@@ -222,11 +224,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   children: [
                     const Expanded(child: Divider(color: Colors.white24)),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
-                        'Or',
-                        style: TextStyle(color: Colors.white70),
+                        loc.t('or'),
+                        style: const TextStyle(color: Colors.white70),
                       ),
                     ),
                     const Expanded(child: Divider(color: Colors.white24)),
@@ -237,7 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // Google social button
                 _buildSocialButton(
-                  label: 'Continue with Google',
+                  label: loc.t('continue_google'),
                   icon: Icons.g_mobiledata,
                   onTap: () {},
                 ).animate().fadeIn(delay: 800.ms),
@@ -246,7 +248,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // Apple social button
                 _buildSocialButton(
-                  label: 'Continue with Apple',
+                  label: loc.t('continue_apple'),
                   icon: Icons.apple,
                   onTap: () {},
                 ).animate().fadeIn(delay: 900.ms),

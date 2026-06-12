@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:provider/provider.dart';
 import 'package:flux_bank/navigation/app_router.dart';
+import 'package:flux_bank/providers/localization_provider.dart';
 import 'package:flux_bank/theme/app_theme.dart';
 import 'package:flux_bank/widgets/flux_button.dart';
 
@@ -27,29 +29,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  final List<_OnboardingSlide> _slides = const [
-    _OnboardingSlide(
-      title: 'Bank-Grade Security',
-      subtitle:
-          'Your money is protected with end-to-end encryption and multi-factor authentication.',
-      icon: Icons.shield_outlined,
-    ),
-    _OnboardingSlide(
-      title: 'Instant Transfers',
-      subtitle:
-          'Send money to anyone instantly — via bank transfer, MTN MoMo, or Orange Money.',
-      icon: Icons.bolt_outlined,
-    ),
-    _OnboardingSlide(
-      title: 'Smart Analytics',
-      subtitle:
-          'Visualize your spending patterns and take control of your financial future.',
-      icon: Icons.bar_chart_rounded,
-    ),
-  ];
+
 
   void _next() {
-    if (_currentPage < _slides.length - 1) {
+    if (_currentPage < 2) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeInOut,
@@ -65,6 +48,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = context.watch<LocalizationProvider>();
+    final List<_OnboardingSlide> _slides = [
+      _OnboardingSlide(
+        title: loc.t('bank_grade_security'),
+        subtitle: loc.t('bank_grade_security_desc'),
+        icon: Icons.shield_outlined,
+      ),
+      _OnboardingSlide(
+        title: loc.t('instant_transfers'),
+        subtitle: loc.t('instant_transfers_desc'),
+        icon: Icons.bolt_outlined,
+      ),
+      _OnboardingSlide(
+        title: loc.t('smart_analytics'),
+        subtitle: loc.t('smart_analytics_desc'),
+        icon: Icons.bar_chart_rounded,
+      ),
+    ];
     final isLast = _currentPage == _slides.length - 1;
 
     return Scaffold(
@@ -72,7 +73,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextButton.icon(
+                  onPressed: () => loc.toggleLanguage(),
+                  icon: const Icon(Icons.language, color: Colors.white, size: 18),
+                  label: Text(
+                    loc.locale.toUpperCase(),
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
 
             // Page content
             Expanded(
@@ -164,7 +178,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   // Outlined "Skip"
                   Expanded(
                     child: FluxButton(
-                      'Skip',
+                      loc.t('skip'),
                       variant: FluxButtonVariant.secondary,
                       isDark: true,
                       onPressed: _goToLogin,
@@ -174,7 +188,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   // Filled white "Next" / "Get Started"
                   Expanded(
                     child: FluxButton(
-                      isLast ? 'Get Started' : 'Next',
+                      isLast ? loc.t('get_started') : loc.t('next'),
                       onPressed: _next,
                     ),
                   ),
