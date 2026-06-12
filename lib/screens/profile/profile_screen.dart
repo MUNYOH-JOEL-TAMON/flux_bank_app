@@ -105,6 +105,12 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 _buildToggleRow(
                     'Biometric Login', false, Icons.fingerprint_outlined),
+                const Divider(color: AppColors.divider, height: 1),
+                _buildToggleRow(
+                    'Two-Factor Authentication (2FA)', false, Icons.security_outlined),
+                const Divider(color: AppColors.divider, height: 1),
+                _buildActionRow(
+                    'Change Password', Icons.lock_outline, () {}),
               ],
             ),
 
@@ -168,12 +174,14 @@ class ProfileScreen extends StatelessWidget {
         children: [
           Icon(icon, color: AppColors.textSecondary, size: 18),
           const SizedBox(width: 12),
-          Text(
-            label,
-            style: const TextStyle(
-                color: AppColors.textPrimary, fontSize: 14),
+          Expanded(
+            child: Text(
+              label,
+              style: const TextStyle(
+                  color: AppColors.textPrimary, fontSize: 14),
+            ),
           ),
-          const Spacer(),
+          const SizedBox(width: 8),
           Text(
             value,
             style: const TextStyle(
@@ -193,14 +201,38 @@ class ProfileScreen extends StatelessWidget {
         children: [
           Icon(icon, color: AppColors.textSecondary, size: 18),
           const SizedBox(width: 12),
-          Text(
-            label,
-            style: const TextStyle(
-                color: AppColors.textPrimary, fontSize: 14),
+          Expanded(
+            child: Text(
+              label,
+              style: const TextStyle(
+                  color: AppColors.textPrimary, fontSize: 14),
+            ),
           ),
-          const Spacer(),
           Switch(value: initialValue, onChanged: (v) {}),
         ],
+      ),
+    );
+  }
+
+  Widget _buildActionRow(String label, IconData icon, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: Row(
+          children: [
+            Icon(icon, color: AppColors.textSecondary, size: 18),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                label,
+                style: const TextStyle(
+                    color: AppColors.textPrimary, fontSize: 14),
+              ),
+            ),
+            const Icon(Icons.chevron_right, color: AppColors.textSecondary, size: 20),
+          ],
+        ),
       ),
     );
   }
