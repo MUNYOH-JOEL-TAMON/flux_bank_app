@@ -218,40 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.2, end: 0),
 
-                const SizedBox(height: 24),
 
-                // "Or" divider
-                Row(
-                  children: [
-                    const Expanded(child: Divider(color: Colors.white24)),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        loc.t('or'),
-                        style: const TextStyle(color: Colors.white70),
-                      ),
-                    ),
-                    const Expanded(child: Divider(color: Colors.white24)),
-                  ],
-                ).animate().fadeIn(delay: 700.ms),
-
-                const SizedBox(height: 16),
-
-                // Google social button
-                _buildSocialButton(
-                  label: loc.t('continue_google'),
-                  icon: Icons.g_mobiledata,
-                  onTap: () {},
-                ).animate().fadeIn(delay: 800.ms),
-
-                const SizedBox(height: 12),
-
-                // Apple social button
-                _buildSocialButton(
-                  label: loc.t('continue_apple'),
-                  icon: Icons.apple,
-                  onTap: () {},
-                ).animate().fadeIn(delay: 900.ms),
 
                 const SizedBox(height: 32),
               ],
@@ -260,39 +227,4 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  Widget _buildSocialButton({
-    required String label,
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        height: 52,
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(26),
-          border: Border.all(color: AppColors.divider),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: AppColors.textPrimary, size: 22),
-            const SizedBox(width: 10),
-            Text(
-              label,
-              style: const TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
