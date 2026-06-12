@@ -5,6 +5,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flux_bank/navigation/app_router.dart';
 import 'package:flux_bank/providers/auth_provider.dart';
 import 'package:flux_bank/providers/banking_provider.dart';
+import 'package:flux_bank/providers/localization_provider.dart';
 import 'package:flux_bank/theme/app_theme.dart';
 import 'package:flux_bank/widgets/balance_card.dart';
 import 'package:flux_bank/widgets/transaction_tile.dart';
@@ -21,6 +22,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     final banking = context.watch<BankingProvider>();
+    final loc = context.watch<LocalizationProvider>();
     final user = auth.user;
 
     if (user == null) {
@@ -74,9 +76,9 @@ class HomeScreen extends StatelessWidget {
                           // "Hello," gray + name white
                           Row(
                             children: [
-                              const Text(
-                                'Hello, ',
-                                style: TextStyle(
+                              Text(
+                                loc.t('hello'),
+                                style: const TextStyle(
                                   color: AppColors.textSecondary,
                                   fontSize: 16,
                                 ),
@@ -129,27 +131,27 @@ class HomeScreen extends StatelessWidget {
                       _buildAction(
                         context,
                         icon: Icons.arrow_upward_rounded,
-                        label: 'Top Up',
+                        label: loc.t('top_up'),
                         onTap: () => onTopUp?.call(),
                       ),
                       _buildAction(
                         context,
                         icon: Icons.swap_horiz_rounded,
-                        label: 'Transfer',
+                        label: loc.t('transfer'),
                         onTap: () =>
                             Navigator.pushNamed(context, AppRouter.transfer),
                       ),
                       _buildAction(
                         context,
                         icon: Icons.bar_chart_rounded,
-                        label: 'Analytics',
+                        label: loc.t('analytics'),
                         onTap: () =>
                             Navigator.pushNamed(context, AppRouter.analytics),
                       ),
                       _buildAction(
                         context,
                         icon: Icons.sports_esports_outlined,
-                        label: 'Quiz',
+                        label: loc.t('quiz'),
                         onTap: () =>
                             Navigator.pushNamed(context, AppRouter.quiz),
                       ),
@@ -162,7 +164,7 @@ class HomeScreen extends StatelessWidget {
                 // ── Horizontal card scroll (VISA / Mastercard style) ─────
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: const SectionHeader(title: 'My Card'),
+                  child: SectionHeader(title: loc.t('my_card')),
                 ).animate().fadeIn(delay: 250.ms),
 
                 const SizedBox(height: 16),
@@ -172,6 +174,8 @@ class HomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: _buildMiniCard(
                     label: 'VISA',
+                    cardholderText: loc.t('cardholder'),
+                    validText: loc.t('valid'),
                     last4: user.accountNumber.length >= 4
                         ? user.accountNumber
                             .substring(user.accountNumber.length - 4)
@@ -185,7 +189,7 @@ class HomeScreen extends StatelessWidget {
                 // ── Mini line chart ──────────────────────────────────────
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: const SectionHeader(title: 'Activity'),
+                  child: SectionHeader(title: loc.t('activity')),
                 ).animate().fadeIn(delay: 350.ms),
 
                 const SizedBox(height: 16),
@@ -243,7 +247,7 @@ class HomeScreen extends StatelessWidget {
                             touchTooltipData: BarTouchTooltipData(
                               getTooltipColor: (_) => AppColors.elevated,
                               getTooltipItem: (group, gIdx, rod, rIdx) {
-                                final label = rIdx == 0 ? 'In' : 'Out';
+                                final label = rIdx == 0 ? loc.t('in') : loc.t('out');
                                 return BarTooltipItem(
                                   '$label\nXAF ${rod.toY.round()}',
                                   TextStyle(
@@ -324,8 +328,8 @@ class HomeScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: SectionHeader(
-                    title: 'Transactions',
-                    actionLabel: 'See all',
+                    title: loc.t('transactions'),
+                    actionLabel: loc.t('see_all'),
                     onAction: () => onSeeAll?.call(),
                   ),
                 ).animate().fadeIn(delay: 450.ms),
@@ -340,10 +344,10 @@ class HomeScreen extends StatelessWidget {
                 else if (banking.recentTransactions.isEmpty)
                   const Center(
                     child: Padding(
-                      padding: EdgeInsets.all(32.0),
+                      padding: const EdgeInsets.all(32.0),
                       child: Text(
-                        'No recent transactions.',
-                        style: TextStyle(color: AppColors.textSecondary),
+                        loc.t('no_recent_transactions'),
+                        style: const TextStyle(color: AppColors.textSecondary),
                       ),
                     ),
                   )
@@ -406,11 +410,12 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // Mini VISA/Mastercard dark card
   Widget _buildMiniCard({
     required String label,
     required String last4,
     required String holderName,
+    required String cardholderText,
+    required String validText,
   }) {
     return Container(
       width: double.infinity,
@@ -466,7 +471,7 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'CARDHOLDER',
+                  cardholderText,
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.4),
                     fontSize: 9,
@@ -493,8 +498,8 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  'VALID',
-                  style: TextStyle(
+                  validText,
+                  style: const TextStyle(
                     color: Color(0x66FFFFFF),
                     fontSize: 9,
                     letterSpacing: 1,

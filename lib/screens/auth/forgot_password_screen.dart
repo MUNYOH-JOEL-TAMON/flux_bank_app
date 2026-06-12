@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:flux_bank/providers/auth_provider.dart';
+import 'package:flux_bank/providers/localization_provider.dart';
 import 'package:flux_bank/theme/app_theme.dart';
 import 'package:flux_bank/widgets/flux_button.dart';
 import 'package:flux_bank/widgets/flux_text_field.dart';
@@ -38,6 +39,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
+    final loc = context.watch<LocalizationProvider>();
 
     return Scaffold(
       backgroundColor: AppColors.primary,
@@ -49,9 +51,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               size: 18, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Reset Password',
-          style: TextStyle(
+        title: Text(
+          loc.t('reset_password'),
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Colors.white,
@@ -61,13 +63,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       body: SafeArea(
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),
-          child: _emailSent ? _buildSuccess() : _buildForm(auth),
+          child: _emailSent ? _buildSuccess(loc) : _buildForm(auth, loc),
         ),
       ),
     );
   }
 
-  Widget _buildSuccess() {
+  Widget _buildSuccess(LocalizationProvider loc) {
     return Center(
       key: const ValueKey('success'),
       child: Padding(
@@ -89,9 +91,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
             const SizedBox(height: 24),
 
-            const Text(
-              'Check your inbox',
-              style: TextStyle(
+            Text(
+              loc.t('check_inbox'),
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 24,
                 fontWeight: FontWeight.w800,
@@ -101,7 +103,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             const SizedBox(height: 12),
 
             Text(
-              'We sent a password reset link to\n${_emailController.text}',
+              '${loc.t('reset_link_sent')}${_emailController.text}',
               textAlign: TextAlign.center,
               style: const TextStyle(
                 color: Colors.white70,
@@ -113,7 +115,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             const SizedBox(height: 40),
 
             FluxButton(
-              'Back to Sign In',
+              loc.t('back_to_sign_in'),
               onPressed: () => Navigator.pop(context),
             ).animate().fadeIn(delay: 200.ms),
           ],
@@ -122,7 +124,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  Widget _buildForm(AuthProvider auth) {
+  Widget _buildForm(AuthProvider auth, LocalizationProvider loc) {
     return SingleChildScrollView(
       key: const ValueKey('form'),
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -148,10 +150,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
             const SizedBox(height: 24),
 
-            const Text(
-              'Forgot your password?',
+            Text(
+              loc.t('forgot_password_title'),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 24,
                 fontWeight: FontWeight.w800,
@@ -161,10 +163,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
             const SizedBox(height: 12),
 
-            const Text(
-              'Enter the email address associated with your account and we will send you a link to reset your password.',
+            Text(
+              loc.t('forgot_password_desc'),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white70,
                 fontSize: 15,
                 height: 1.5,
@@ -202,20 +204,20 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             ],
 
             FluxTextField(
-              label: 'Email',
+              label: loc.t('email'),
               labelStyle: const TextStyle(
                 color: Colors.white70,
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
               ),
-              hint: 'Enter your email',
+              hint: loc.t('email_hint'),
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               prefixIcon: const Icon(Icons.mail_outline,
                   color: AppColors.textSecondary, size: 20),
               validator: (val) {
-                if (val == null || val.isEmpty) return 'Email is required';
-                if (!val.contains('@')) return 'Enter a valid email';
+                if (val == null || val.isEmpty) return loc.t('email_required');
+                if (!val.contains('@')) return loc.t('invalid_email');
                 return null;
               },
             ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1, end: 0),
@@ -223,7 +225,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             const SizedBox(height: 32),
 
             FluxButton(
-              'Send Reset Link',
+              loc.t('send_reset_link'),
               icon: Icons.send_outlined,
               onPressed: _sendReset,
               isLoading: auth.isLoading,
