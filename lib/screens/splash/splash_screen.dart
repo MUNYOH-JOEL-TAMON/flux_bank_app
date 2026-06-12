@@ -34,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.shell,
+      backgroundColor: AppColors.primary,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -44,14 +44,14 @@ class _SplashScreenState extends State<SplashScreen> {
               width: 90,
               height: 90,
               decoration: BoxDecoration(
-                color: AppColors.textPrimary,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(24),
               ),
               alignment: Alignment.center,
               child: const Text(
                 'F',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.primary,
                   fontSize: 48,
                   fontWeight: FontWeight.w900,
                   letterSpacing: -2,
@@ -71,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
             const Text(
               'FLUX',
               style: TextStyle(
-                color: AppColors.textPrimary,
+                color: Colors.white,
                 fontSize: 36,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 10,
@@ -86,7 +86,7 @@ class _SplashScreenState extends State<SplashScreen> {
             const Text(
               'Banking Reimagined',
               style: TextStyle(
-                color: AppColors.textSecondary,
+                color: Colors.white70,
                 fontSize: 14,
                 letterSpacing: 2,
               ),
@@ -100,9 +100,9 @@ class _SplashScreenState extends State<SplashScreen> {
                 borderRadius: BorderRadius.circular(4),
                 child: LinearProgressIndicator(
                   backgroundColor:
-                      AppColors.textPrimary.withValues(alpha: 0.1),
+                      Colors.white24,
                   valueColor: const AlwaysStoppedAnimation<Color>(
-                      AppColors.textPrimary),
+                      Colors.white),
                   minHeight: 3,
                 ),
               ),

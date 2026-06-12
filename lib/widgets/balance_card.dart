@@ -61,9 +61,9 @@ class _BalanceCardState extends State<BalanceCard>
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.primary,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.divider, width: 1),
+        border: Border.all(color: Colors.white24, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +75,7 @@ class _BalanceCardState extends State<BalanceCard>
               const Text(
                 'Total Balance',
                 style: TextStyle(
-                  color: AppColors.textSecondary,
+                  color: Colors.white70,
                   fontSize: 13,
                   fontWeight: FontWeight.w500,
                   letterSpacing: 0.3,
@@ -87,7 +87,7 @@ class _BalanceCardState extends State<BalanceCard>
                   _isHidden
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
-                  color: AppColors.textSecondary,
+                  color: Colors.white70,
                   size: 20,
                 ),
               ),
@@ -112,7 +112,7 @@ class _BalanceCardState extends State<BalanceCard>
                     child: Text(
                       'XAF ••••••',
                       style: TextStyle(
-                        color: AppColors.textPrimary,
+                        color: Colors.white,
                         fontSize: 36,
                         fontWeight: FontWeight.bold,
                         letterSpacing: -1,
@@ -128,7 +128,7 @@ class _BalanceCardState extends State<BalanceCard>
                         return Text(
                           'XAF ${_formatBalance(_animation.value)}',
                           style: const TextStyle(
-                            color: AppColors.textPrimary,
+                            color: Colors.white,
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
                             letterSpacing: -1,
@@ -142,7 +142,7 @@ class _BalanceCardState extends State<BalanceCard>
           const SizedBox(height: 20),
 
           // Divider
-          const Divider(color: AppColors.divider, height: 1),
+          const Divider(color: Colors.white24, height: 1),
 
           const SizedBox(height: 16),
 
@@ -156,7 +156,7 @@ class _BalanceCardState extends State<BalanceCard>
                   const Text(
                     'ACCOUNT',
                     style: TextStyle(
-                      color: AppColors.textTertiary,
+                      color: Colors.white54,
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1.2,
@@ -166,7 +166,7 @@ class _BalanceCardState extends State<BalanceCard>
                   Text(
                     widget.user.maskedAccountNumber,
                     style: const TextStyle(
-                      color: AppColors.textSecondary,
+                      color: Colors.white,
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
                       letterSpacing: 1.5,
@@ -180,7 +180,7 @@ class _BalanceCardState extends State<BalanceCard>
                   const Text(
                     'HOLDER',
                     style: TextStyle(
-                      color: AppColors.textTertiary,
+                      color: Colors.white54,
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1.2,
@@ -190,7 +190,7 @@ class _BalanceCardState extends State<BalanceCard>
                   Text(
                     widget.user.fullName.split(' ').first.toUpperCase(),
                     style: const TextStyle(
-                      color: AppColors.textSecondary,
+                      color: Colors.white,
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 0.5,
